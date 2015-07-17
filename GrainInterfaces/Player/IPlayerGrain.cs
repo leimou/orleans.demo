@@ -27,5 +27,7 @@ namespace PlayerProgression
         /// </summary>
         /// <returns></returns>
         Task LeaveGame(IGameGrain game);
+
+        Task Progress(Progression data);
     }
 }

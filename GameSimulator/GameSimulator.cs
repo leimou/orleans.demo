@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using PlayerProgression;
 
 namespace GameSimulator
 {
@@ -23,17 +24,12 @@ namespace GameSimulator
             Profile = profile;
             Status = new PlayerStatus();
         }
-
         public void Kill(Player another)
         {
-            Thread.BeginCriticalRegion();
-                
             Console.WriteLine("Player {0} kills player {1}", this.Id, another.Id);
             Status.Kills++;
             Status.Experience += 100;
             another.Die();
-                
-            Thread.EndCriticalRegion();
         }
         void Die()
         {
@@ -55,7 +51,6 @@ namespace GameSimulator
         public int Experience { get; set; }
         public int Kills { get; set; }
         public int Death { get; set; }
-
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
@@ -69,15 +64,17 @@ namespace GameSimulator
     // A game session runs in a separate thread.
     class Session
     {
-        private Guid game;
+        public Guid Game { get; private set; }
         private TimeSpan duration;
         private List<Player> players;
+        private IDispatcher dispatcher;
 
         public Session(int seconds)
         {
-            game = Guid.NewGuid();
+            Game = Guid.NewGuid();
             duration = new TimeSpan(0, 0, seconds);
             players = new List<Player>();
+            dispatcher = GrainClient.GrainFactory.GetGrain<IDispatcher>(0);
         }
         public void Run()
         {
@@ -114,6 +111,22 @@ namespace GameSimulator
                 playerClone = DeepClone<List<Player>>(players);
                 Console.WriteLine("Heartbeat");
             }
+            Heartbeat(playerClone);
+        }
+        void Heartbeat(List<Player> playerList)
+        {
+            HeartbeatData data = new HeartbeatData();
+            foreach (Player player in playerList) 
+            {
+                Progression progression = new Progression();
+                progression.Experience = player.Status.Experience;
+                progression.Death = player.Status.Death;
+                progression.Kills = player.Status.Kills;
+                data.Status.AddPlayer(player.Id, progression);
+            }
+            data.Game = this.Game;
+
+            dispatcher.Heartbeat(HeartbeatDataDotNetSerializer.Serialize(data));
         }
         private static T DeepClone<T>(T obj)
         {
@@ -145,11 +158,10 @@ namespace GameSimulator
     {
         static void Main(string[] args)
         {
-            GrainClient.Initialize();
+            GrainClient.Initialize("DevTestClientConfiguration.xml");
             // Number of players within game sessions.
             int playerCount = 8;
-            // Number of game sessions
-            // int gameCount = 2;
+
             // Number of seconds for a game session.
             int sessionTime = 20;
 

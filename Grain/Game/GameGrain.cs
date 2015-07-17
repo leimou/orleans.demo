@@ -12,26 +12,23 @@ namespace PlayerProgression
         private GameStatus status;
         private ObserverSubscriptionManager<IGameObserver> subscribers;
         private HashSet<long> players;
-
         public override Task OnActivateAsync()
         {
             subscribers = new ObserverSubscriptionManager<IGameObserver>();
             players = new HashSet<long>();
             return TaskDone.Done;
         }
-
         public override Task OnDeactivateAsync()
         {
             subscribers.Clear();
             players.Clear();
             return TaskDone.Done;
         }
-
         public async Task UpdateGameStatus(GameStatus status)
         {
             this.status = status;
 
-            foreach (long player in status.Players)
+            foreach (long player in status.Players.Keys)
             {
                 if (!players.Contains(player))
                 {
@@ -48,7 +45,7 @@ namespace PlayerProgression
             List<Task> promises = new List<Task>();
             foreach (long player in players)
             {
-                if (!status.Players.Contains(player))
+                if (!status.Players.ContainsKey(player))
                 {
                     try {
                         promises.Add(base.GrainFactory.GetGrain<IPlayerGrain>(player).LeaveGame(this));
@@ -58,20 +55,20 @@ namespace PlayerProgression
 
                     }
                 }
+                else
+                {
+                    promises.Add(base.GrainFactory.GetGrain<IPlayerGrain>(player).Progress(status.Players[player]));
+                }
             }
             await Task.WhenAll(promises);
 
-            subscribers.Notify((s) => s.UpdateGameScore(status.Status));
-
             return;
         }
-
         public Task SubscribeGameUpdates(IGameObserver subscriber)
         {
             subscribers.Subscribe(subscriber);
             return TaskDone.Done;
         }
-
         public Task UnsubscribeGameUpdates(IGameObserver subscriber)
         {
             subscribers.Unsubscribe(subscriber);

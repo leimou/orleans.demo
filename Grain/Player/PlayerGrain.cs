@@ -10,7 +10,6 @@ namespace PlayerProgression
     public class Player : Grain, IPlayerGrain
     {
         private IGameGrain currentGame;
-
         public Task<IGameGrain> GetGame()
         {
             return Task.FromResult(currentGame);
@@ -25,6 +24,11 @@ namespace PlayerProgression
         {
             currentGame = null;
             Console.WriteLine("Player {0} left game {1}", this.GetPrimaryKey(), game.GetPrimaryKey());
+            return TaskDone.Done;
+        }
+
+        public Task Progress(Progression data)
+        {
             return TaskDone.Done;
         }
     }

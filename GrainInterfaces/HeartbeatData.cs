@@ -10,20 +10,27 @@ namespace PlayerProgression
     public class Progression 
     {
         public long Experience { get; set; }
-        public long Headshots { get; set; }
+        public long Kills { get; set; }
         public long Death { get; set; }
     }
 
     [Serializable]
     public class GameStatus
     {
-        public HashSet<long> Players { get; private set; }
-        public Dictionary<long, Progression> Status { get; private set; }
+        // The set of players that currently in the game.
+        public Dictionary<long, Progression> Players { get; set; }
 
         public GameStatus()
         {
-            Players = new HashSet<long>();
-            Status = new Dictionary<long, Progression>();
+            Players = new Dictionary<long, Progression>();
+        }
+        public void AddPlayer(long id, Progression status) 
+        {
+            try
+            {
+                Players.Add(id, status);
+            }
+            catch (System.Exception) {}
         }
     }
 
@@ -31,8 +38,7 @@ namespace PlayerProgression
     public class HeartbeatData
     {
         public Guid Game { get; set; }
-        public GameStatus Status { get; private set; }
-
+        public GameStatus Status { get; set; }
         public HeartbeatData()
         {
             Status = new GameStatus();

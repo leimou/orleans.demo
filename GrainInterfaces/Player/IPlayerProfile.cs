@@ -9,6 +9,6 @@ namespace PlayerProgression
 {
     public interface IPlayerProfile : IGrainWithGuidKey
     {
-
+        Task UpdateProfile(Progression updates);
     }
 }

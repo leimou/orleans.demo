@@ -8,7 +8,7 @@ using Orleans.Concurrency;
 
 namespace PlayerProgression
 {
-    public interface IPresenceGrain: IGrain
+    public interface IDispatcher: IGrainWithIntegerKey
     {
         Task Heartbeat(byte[] data);
     }

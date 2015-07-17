@@ -9,7 +9,7 @@ using Orleans.Concurrency;
 namespace PlayerProgression
 {
     [StatelessWorker]
-    public class PresenceGrain : Grain, IPresenceGrain
+    public class Dispatcher : Grain, IDispatcher
     {
         public Task Heartbeat(byte[] data)
         {
