@@ -14,8 +14,7 @@ namespace PlayerProgression
     /// </summary>
     public interface IGameGrain : IGrainWithGuidKey
     {
-        Task UpdateGameStatus(GameStatus status);
-        Task SubscribeGameUpdates(IGameObserver subscriber);
-        Task UnsubscribeGameUpdates(IGameObserver subscriber);
+        Task UpdateStatus(GameStatus status);
+        Task EndGame();
     }
 }

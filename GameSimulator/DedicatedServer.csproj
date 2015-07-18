@@ -7,8 +7,8 @@
     <ProjectGuid>{6E49FD4F-BCE1-4974-866B-D9D4C1E178CD}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GameSimulator</RootNamespace>
-    <AssemblyName>GameSimulator</AssemblyName>
+    <RootNamespace>DedicatedServer</RootNamespace>
+    <AssemblyName>DedicatedServer</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <PublishUrl>publish\</PublishUrl>
@@ -60,7 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GameSimulator.cs" />
+    <Compile Include="DedicatedServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -88,6 +88,10 @@
     <ProjectReference Include="..\GrainInterfaces\GrainInterfaces.csproj">
       <Project>{2a1c39ad-3cce-4f43-a84b-c0491bef1818}</Project>
       <Name>GrainInterfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PacketDefinition\PacketDefinition.csproj">
+      <Project>{e1f29ca6-0239-4938-9c77-91f2a3a454f2}</Project>
+      <Name>PacketDefinition</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -9,70 +9,66 @@ namespace PlayerProgression
 {
     public class GameGrain : Grain, IGameGrain
     {
-        private GameStatus status;
-        private ObserverSubscriptionManager<IGameObserver> subscribers;
-        private HashSet<long> players;
+        public HashSet<long> players;
         public override Task OnActivateAsync()
         {
-            subscribers = new ObserverSubscriptionManager<IGameObserver>();
             players = new HashSet<long>();
             return TaskDone.Done;
         }
         public override Task OnDeactivateAsync()
         {
-            subscribers.Clear();
             players.Clear();
             return TaskDone.Done;
         }
-        public async Task UpdateGameStatus(GameStatus status)
+        public async Task UpdateStatus(GameStatus status)
         {
-            this.status = status;
+            var playerStatus = status.Status;
 
-            foreach (long player in status.Players.Keys)
+            foreach (long player in playerStatus.Keys)
             {
                 if (!players.Contains(player))
                 {
-                    try {
+                    try 
+                    {
                         await base.GrainFactory.GetGrain<IPlayerGrain>(player).JoinGame(this);
                         players.Add(player);
                     }
-                    catch (Exception) {
-
-                    }
+                    catch (Exception) {}
                 }
             }
 
             List<Task> promises = new List<Task>();
             foreach (long player in players)
             {
-                if (!status.Players.ContainsKey(player))
+                if (!playerStatus.ContainsKey(player))
                 {
-                    try {
+                    try 
+                    {
                         promises.Add(base.GrainFactory.GetGrain<IPlayerGrain>(player).LeaveGame(this));
                         players.Remove(player);
                     }
-                    catch (Exception) {
-
-                    }
+                    catch (Exception) {}
                 }
                 else
                 {
-                    promises.Add(base.GrainFactory.GetGrain<IPlayerGrain>(player).Progress(status.Players[player]));
+                    promises.Add(base.GrainFactory.GetGrain<IPlayerGrain>(player).Progress(playerStatus[player]));
                 }
             }
             await Task.WhenAll(promises);
 
             return;
         }
-        public Task SubscribeGameUpdates(IGameObserver subscriber)
+
+        public async Task EndGame()
         {
-            subscribers.Subscribe(subscriber);
-            return TaskDone.Done;
-        }
-        public Task UnsubscribeGameUpdates(IGameObserver subscriber)
-        {
-            subscribers.Unsubscribe(subscriber);
-            return TaskDone.Done;
+            List<Task> promises = new List<Task>();
+            foreach (long player in players)
+            {
+                promises.Add(base.GrainFactory.GetGrain<IPlayerGrain>(player).LeaveGame(this));
+            }
+            await Task.WhenAll(promises);
+
+            return;
         }
     }
 }

@@ -44,9 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Game\GameGrain.cs" />
-    <Compile Include="Player\PlayerGrain.cs" />
-    <Compile Include="Player\PlayerProfile.cs" />
+    <Compile Include="GameGrain.cs" />
+    <Compile Include="PlayerGrain.cs" />
     <Compile Include="Dispatcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\orleans.codegen.cs" />
@@ -58,6 +57,10 @@
     <ProjectReference Include="..\GrainInterfaces\GrainInterfaces.csproj">
       <Project>{2a1c39ad-3cce-4f43-a84b-c0491bef1818}</Project>
       <Name>GrainInterfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PacketDefinition\PacketDefinition.csproj">
+      <Project>{e1f29ca6-0239-4938-9c77-91f2a3a454f2}</Project>
+      <Name>PacketDefinition</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

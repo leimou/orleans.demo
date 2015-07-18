@@ -9,8 +9,9 @@ using System.Threading;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using PlayerProgression;
+using PlayerProgression.Packet;
 
-namespace GameSimulator
+namespace DedicatedServer
 {
     [Serializable]
     public class Player
@@ -26,14 +27,14 @@ namespace GameSimulator
         }
         public void Kill(Player another)
         {
-            Console.WriteLine("Player {0} kills player {1}", this.Id, another.Id);
+            // Console.WriteLine("Player {0} kills player {1}", this.Id, another.Id);
             Status.Kills++;
             Status.Experience += 100;
             another.Die();
         }
         void Die()
         {
-            Console.WriteLine("Player {0} died", this.Id);
+            // Console.WriteLine("Player {0} died", this.Id);
             Status.Death++;
         }
         public string Summary()
@@ -75,6 +76,8 @@ namespace GameSimulator
             duration = new TimeSpan(0, 0, seconds);
             players = new List<Player>();
             dispatcher = GrainClient.GrainFactory.GetGrain<IDispatcher>(0);
+
+            Console.WriteLine("Create new GameSession {0}", Game);
         }
         public void Run()
         {
@@ -111,11 +114,11 @@ namespace GameSimulator
                 playerClone = DeepClone<List<Player>>(players);
                 Console.WriteLine("Heartbeat");
             }
-            Heartbeat(playerClone);
+            SendHeartbeat(playerClone);
         }
-        void Heartbeat(List<Player> playerList)
+        void SendHeartbeat(List<Player> playerList)
         {
-            HeartbeatData data = new HeartbeatData();
+            Heartbeat data = new Heartbeat();
             foreach (Player player in playerList) 
             {
                 Progression progression = new Progression();
@@ -126,7 +129,13 @@ namespace GameSimulator
             }
             data.Game = this.Game;
 
-            dispatcher.Heartbeat(HeartbeatDataDotNetSerializer.Serialize(data));
+            dispatcher.Heartbeat(PacketSerializer.Serialize(data));
+        }
+        void SendGameEnds()
+        {
+            GameEnds data = new GameEnds();
+            data.Game = this.Game;
+            dispatcher.EndGame(PacketSerializer.Serialize(data));
         }
         private static T DeepClone<T>(T obj)
         {
@@ -145,6 +154,9 @@ namespace GameSimulator
             {
                 Console.WriteLine(player.Summary());
             }
+            // At the end of game session, send the last heartbeat, as a summary of the game.
+            SendHeartbeat(players);
+            SendGameEnds();
         }
         public void AddPlayer(Player player)
         {

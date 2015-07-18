@@ -9,6 +9,6 @@ namespace PlayerProgression
 {
     public interface IGameObserver : IGrainObserver
     {
-        void UpdateGameScore(Dictionary<long, Progression> status);
+        // void UpdateGameScore(Dictionary<long, Progression> status);
     }
 }
