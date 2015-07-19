@@ -99,7 +99,7 @@ namespace DedicatedServer
                 {
                     players[killer].Kill(players[victim]);
                 }
-                Thread.Sleep(TimeSpan.FromMilliseconds(rnd.Next(0, 100)));
+                Thread.Sleep(TimeSpan.FromMilliseconds(rnd.Next(0, 200)));
             }
             s.Stop();
 
@@ -164,29 +164,6 @@ namespace DedicatedServer
             {
                 players.Add(player);
             }
-        }
-    }
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            GrainClient.Initialize("DevTestClientConfiguration.xml");
-            // Number of players within game sessions.
-            int playerCount = 8;
-
-            // Number of seconds for a game session.
-            int sessionTime = 20;
-
-            Session session = new Session(sessionTime);
-            for (int i = 0; i < playerCount; i++)
-            {
-                session.AddPlayer(new Player(i, Guid.NewGuid()));
-            }
-            Thread simulation = new Thread(new ThreadStart(session.Run));
-            simulation.Start();
-            simulation.Join();
-
-            Console.ReadKey();
         }
     }
 }
