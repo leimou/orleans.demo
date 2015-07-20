@@ -9,25 +9,25 @@ namespace PlayerProgression
 {
     public interface IPlayerGrain : IGrainWithIntegerKey
     {
-        /// <summary>
-        /// Get the current game a player has joined.
-        /// </summary>
-        /// <returns></returns>
+        // Get the current game a player has joined.
         Task<IGameGrain> GetGame();
 
-        /// <summary>
-        /// Join an existing game session.
-        /// </summary>
-        /// <param name="game"></param>
-        /// <returns></returns>
+        // Join an existing game session.
         Task JoinGame(IGameGrain game);
 
-        /// <summary>
-        /// Leave the current game session.
-        /// </summary>
-        /// <returns></returns>
+        // Leave the current game session.
         Task LeaveGame(IGameGrain game);
 
+        // Update player progression data.
         Task Progress(Progression data);
+    
+        // Login
+        Task Login();
+
+        // Logout
+        Task Logout();
+
+        // Find a game session to join.
+        Task QuickMatch();
     }
 }

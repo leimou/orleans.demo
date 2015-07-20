@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grains", "Grain\Grains.csproj", "{9B6F6BF8-7133-46BE-B112-E7B6BF015A9A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrainInterfaces", "GrainInterfaces\GrainInterfaces.csproj", "{2A1C39AD-3CCE-4F43-A84B-C0491BEF1818}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DedicatedServer", "GameSimulator\DedicatedServer.csproj", "{6E49FD4F-BCE1-4974-866B-D9D4C1E178CD}"
@@ -15,7 +13,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PacketDefinition", "PacketD
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StorageProvider", "StorageProvider\StorageProvider.csproj", "{8A16E1CF-BDB3-49B0-891D-01B0F74C6746}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSManager", "DSManager\DSManager.csproj", "{15B91214-135D-457C-8310-31A313D05B23}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrainImpl", "GrainImpl\GrainImpl.csproj", "{9B6F6BF8-7133-46BE-B112-E7B6BF015A9A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProcessManager", "ProcessManager\ProcessManager.csproj", "{15B91214-135D-457C-8310-31A313D05B23}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9B6F6BF8-7133-46BE-B112-E7B6BF015A9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9B6F6BF8-7133-46BE-B112-E7B6BF015A9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9B6F6BF8-7133-46BE-B112-E7B6BF015A9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9B6F6BF8-7133-46BE-B112-E7B6BF015A9A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2A1C39AD-3CCE-4F43-A84B-C0491BEF1818}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2A1C39AD-3CCE-4F43-A84B-C0491BEF1818}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A1C39AD-3CCE-4F43-A84B-C0491BEF1818}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -47,6 +43,10 @@ Global
 		{8A16E1CF-BDB3-49B0-891D-01B0F74C6746}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A16E1CF-BDB3-49B0-891D-01B0F74C6746}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8A16E1CF-BDB3-49B0-891D-01B0F74C6746}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B6F6BF8-7133-46BE-B112-E7B6BF015A9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B6F6BF8-7133-46BE-B112-E7B6BF015A9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B6F6BF8-7133-46BE-B112-E7B6BF015A9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B6F6BF8-7133-46BE-B112-E7B6BF015A9A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{15B91214-135D-457C-8310-31A313D05B23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{15B91214-135D-457C-8310-31A313D05B23}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{15B91214-135D-457C-8310-31A313D05B23}.Release|Any CPU.ActiveCfg = Release|Any CPU

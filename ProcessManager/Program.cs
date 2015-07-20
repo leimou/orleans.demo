@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using Orleans;
+using PlayerProgression;
 
 namespace DedicatedServer
 {
@@ -12,11 +14,23 @@ namespace DedicatedServer
         private Dictionary<IntPtr, Guid> processMap;
 
         public Guid Id { get; set; }
+        IProcessManager grain;
+        IProcessMgrObserver watcher;
 
         public Manager()
         {
-            Id = Guid.NewGuid();
+            // Id = Guid.NewGuid();
+            Id = new Guid("{2349992C-860A-4EDA-9590-0000000ABCD6}");
             processMap = new Dictionary<IntPtr, Guid>();
+        }
+
+        public async void SubscribeNotification()
+        {
+            grain = GrainClient.GrainFactory.GetGrain<IProcessManager>(Id);
+            watcher = new DSGrainObserver(this);
+
+            IProcessMgrObserver grainObserver = await GrainClient.GrainFactory.CreateObjectReference<IProcessMgrObserver>(watcher);
+            await grain.SubscribeNotification(grainObserver);
         }
 
         public void CreateInstance() 
@@ -39,13 +53,14 @@ namespace DedicatedServer
                     try
                     {
                        processMap.Add(process.Handle, processId);
+                       // Send ProcessCreated Message to Silo
+                       GrainClient.GrainFactory.GetGrain<IProcessManager>(Id).ProcessCreated(processId);
                     }
                     catch (Exception ex)
                     {
                         Console.WriteLine(ex.Message);
                     }
                 }
-                // TODO: Send DSCreated Message to Silo
             }
             catch (Exception e)
             {
@@ -64,8 +79,7 @@ namespace DedicatedServer
                 {
                     processId = processMap[exitedProcess.Handle];
                     processMap.Remove(exitedProcess.Handle);
-
-                    // TODO: Send DSRemoved Message to Silo
+                    GrainClient.GrainFactory.GetGrain<IProcessManager>(Id).ProcessExited(processId);
                 }
                 catch (Exception ex)
                 {
@@ -79,11 +93,27 @@ namespace DedicatedServer
     {
         static void Main(string[] args)
         {
+            GrainClient.Initialize("DevTestClientConfiguration.xml");
+
             Manager manager = new Manager();
-            manager.CreateInstance();
-            manager.CreateInstance();
-            
+            manager.SubscribeNotification();
+
             Console.ReadLine();
+        }
+    }
+
+    class DSGrainObserver : IProcessMgrObserver
+    {
+        private Manager manager;
+
+        public DSGrainObserver(Manager mgr)
+        {
+            manager = mgr;
+        }
+
+        public void CreateProcess()
+        {
+            manager.CreateInstance();
         }
     }
 }

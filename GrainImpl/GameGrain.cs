@@ -10,6 +10,7 @@ namespace PlayerProgression
     public class GameGrain : Grain, IGameGrain
     {
         public HashSet<long> players;
+
         public override Task OnActivateAsync()
         {
             players = new HashSet<long>();

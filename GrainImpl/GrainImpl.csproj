@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ProcessManager.cs" />
     <Compile Include="GameGrain.cs" />
     <Compile Include="PlayerGrain.cs" />
     <Compile Include="Dispatcher.cs" />

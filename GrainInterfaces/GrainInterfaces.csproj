@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IProcessManager.cs" />
     <Compile Include="Serializer.cs" />
     <Compile Include="IGameGrain.cs" />
     <Compile Include="IGameObserver.cs" />
