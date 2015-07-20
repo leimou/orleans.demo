@@ -7,8 +7,8 @@ using Orleans;
 
 namespace PlayerProgression
 {
-    public interface IGameObserver : IGrainObserver
+    public interface IMarchMaker : IGrainWithIntegerKey
     {
-
+        Task<Guid> QuickMarch(long playerId);
     }
 }

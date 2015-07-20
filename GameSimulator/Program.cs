@@ -31,9 +31,6 @@ namespace DedicatedServer
             simulation.Start();
             simulation.Join();
 
-            IProcessManager manager = GrainClient.GrainFactory.GetGrain<IProcessManager>(new Guid("{2349992C-860A-4EDA-9590-0000000ABCD6}"));
-            manager.CreateProcess();
-
             Thread.Sleep(1000);
         }
     }

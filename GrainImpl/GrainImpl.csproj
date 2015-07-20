@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MarchMaker.cs" />
     <Compile Include="ProcessManager.cs" />
     <Compile Include="GameGrain.cs" />
     <Compile Include="PlayerGrain.cs" />

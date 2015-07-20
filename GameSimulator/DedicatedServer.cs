@@ -81,6 +81,8 @@ namespace DedicatedServer
         }
         public void Run()
         {
+            SendGameStarts();
+
             Timer timer = new Timer(HeartbeatCallback, players, 0, 2000);
             Stopwatch s = new Stopwatch();
             s.Start();
@@ -128,14 +130,20 @@ namespace DedicatedServer
                 data.Status.AddPlayer(player.Id, progression);
             }
             data.Game = this.Game;
-
             dispatcher.Heartbeat(PacketSerializer.Serialize(data));
         }
+        void SendGameStarts()
+        {
+            GameStarts data = new GameStarts();
+            data.Game = this.Game;
+            dispatcher.GameStarts(PacketSerializer.Serialize(data)).Wait();
+        }
+
         void SendGameEnds()
         {
             GameEnds data = new GameEnds();
             data.Game = this.Game;
-            dispatcher.EndGame(PacketSerializer.Serialize(data));
+            dispatcher.GameEnds(PacketSerializer.Serialize(data)).Wait();
         }
         private static T DeepClone<T>(T obj)
         {

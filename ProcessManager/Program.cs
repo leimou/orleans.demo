@@ -13,21 +13,18 @@ namespace DedicatedServer
     {
         private Dictionary<IntPtr, Guid> processMap;
 
-        public Guid Id { get; set; }
         IProcessManager grain;
         IProcessMgrObserver watcher;
 
         public Manager()
         {
-            // Id = Guid.NewGuid();
-            Id = new Guid("{2349992C-860A-4EDA-9590-0000000ABCD6}");
             processMap = new Dictionary<IntPtr, Guid>();
         }
 
         public async void SubscribeNotification()
         {
-            grain = GrainClient.GrainFactory.GetGrain<IProcessManager>(Id);
-            watcher = new DSGrainObserver(this);
+            grain = GrainClient.GrainFactory.GetGrain<IProcessManager>(0);
+            watcher = new ProcessMgrObserver(this);
 
             IProcessMgrObserver grainObserver = await GrainClient.GrainFactory.CreateObjectReference<IProcessMgrObserver>(watcher);
             await grain.SubscribeNotification(grainObserver);
@@ -54,7 +51,7 @@ namespace DedicatedServer
                     {
                        processMap.Add(process.Handle, processId);
                        // Send ProcessCreated Message to Silo
-                       GrainClient.GrainFactory.GetGrain<IProcessManager>(Id).ProcessCreated(processId);
+                       GrainClient.GrainFactory.GetGrain<IProcessManager>(0).ProcessCreated(processId);
                     }
                     catch (Exception ex)
                     {
@@ -79,7 +76,7 @@ namespace DedicatedServer
                 {
                     processId = processMap[exitedProcess.Handle];
                     processMap.Remove(exitedProcess.Handle);
-                    GrainClient.GrainFactory.GetGrain<IProcessManager>(Id).ProcessExited(processId);
+                    GrainClient.GrainFactory.GetGrain<IProcessManager>(0).ProcessExited(processId);
                 }
                 catch (Exception ex)
                 {
@@ -102,15 +99,14 @@ namespace DedicatedServer
         }
     }
 
-    class DSGrainObserver : IProcessMgrObserver
+    class ProcessMgrObserver : IProcessMgrObserver
     {
         private Manager manager;
 
-        public DSGrainObserver(Manager mgr)
+        public ProcessMgrObserver(Manager mgr)
         {
             manager = mgr;
         }
-
         public void CreateProcess()
         {
             manager.CreateInstance();

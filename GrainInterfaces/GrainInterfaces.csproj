@@ -44,10 +44,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IMarchMaker.cs" />
     <Compile Include="IProcessManager.cs" />
     <Compile Include="Serializer.cs" />
     <Compile Include="IGameGrain.cs" />
-    <Compile Include="IGameObserver.cs" />
     <Compile Include="IPlayerGrain.cs" />
     <Compile Include="IDispatcher.cs" />
     <Compile Include="Properties\orleans.codegen.cs" />

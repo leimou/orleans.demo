@@ -11,6 +11,8 @@ namespace PlayerProgression
     public interface IDispatcher: IGrainWithIntegerKey
     {
         Task Heartbeat(byte[] data);
-        Task EndGame(byte[] data);
+        Task GameEnds(byte[] data);
+
+        Task GameStarts(byte[] data);
     }
 }

@@ -10,18 +10,21 @@ namespace PlayerProgression
     public class GameGrain : Grain, IGameGrain
     {
         public HashSet<long> players;
+        private ObserverSubscriptionManager<IGameObserver> subscribers;
 
         public override Task OnActivateAsync()
         {
+            subscribers = new ObserverSubscriptionManager<IGameObserver>();
             players = new HashSet<long>();
-            return TaskDone.Done;
+            return base.OnActivateAsync();
         }
         public override Task OnDeactivateAsync()
         {
+            subscribers.Clear();
             players.Clear();
-            return TaskDone.Done;
+            return base.OnDeactivateAsync();
         }
-        public async Task UpdateStatus(GameStatus status)
+        public async Task UpdateGameStatistics(GameStatus status)
         {
             var playerStatus = status.Status;
 
@@ -60,7 +63,13 @@ namespace PlayerProgression
             return;
         }
 
-        public async Task EndGame()
+        public Task GameStarts()
+        {
+            subscribers.Notify((s) => s.UpdateSessionStatus(this.GetPrimaryKey(), false));
+            return TaskDone.Done;
+        }
+
+        public async Task GameEnds()
         {
             List<Task> promises = new List<Task>();
             foreach (long player in players)
@@ -69,7 +78,20 @@ namespace PlayerProgression
             }
             await Task.WhenAll(promises);
 
+            subscribers.Notify((s) => s.UpdateSessionStatus(this.GetPrimaryKey(), true));
             return;
+        }
+
+        public Task SubscribeSessionStatus(IGameObserver subscriber)
+        {
+            subscribers.Subscribe(subscriber);
+            return TaskDone.Done;
+        }
+
+        public Task UnsubscribeSessionStatus(IGameObserver subscriber)
+        {
+            subscribers.Unsubscribe(subscriber);
+            return TaskDone.Done;
         }
     }
 }

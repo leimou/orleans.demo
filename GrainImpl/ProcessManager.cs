@@ -9,24 +9,23 @@ using Orleans.Concurrency;
 namespace PlayerProgression
 {
     [Reentrant]
-    class ProcessManager : Grain, IProcessManager
+    class ProcessManager : Grain, IProcessManager, IGameObserver
     {
         private ObserverSubscriptionManager<IProcessMgrObserver> subscribers;
         private TaskCompletionSource<Guid> source;
-        bool processCreated = false;
+        private Dictionary<Guid, bool> sessionStatus;
 
         public override Task OnActivateAsync()
         {
             subscribers = new ObserverSubscriptionManager<IProcessMgrObserver>();
-            return TaskDone.Done;
+            sessionStatus = new Dictionary<Guid, bool>();
+            return base.OnActivateAsync();
         }
-
         public override Task OnDeactivateAsync()
         {
             subscribers.Clear();
-            return TaskDone.Done;
+            return base.OnDeactivateAsync();
         }
-
         // Called by matcher: Needs a new dedicated server process.
         public async Task<Guid> CreateProcess()
         {
@@ -48,12 +47,25 @@ namespace PlayerProgression
         {
             source.SetResult(processId);
             source = null;
+
+            IGameGrain session = GrainFactory.GetGrain<IGameGrain>(processId);
+            session.SubscribeSessionStatus(this);
+
+            try
+            {
+                sessionStatus.Add(processId, true);
+            }
+            catch (Exception)
+            {
+                throw new Exception("Unexpected state: processId should NOT exist in dictionary.");
+            }
             return TaskDone.Done;
         }
 
         public Task ProcessExited(Guid processId)
         {
-            // Can be used to deactivate the grain corresponding to the exited process.
+            IGameGrain session = GrainFactory.GetGrain<IGameGrain>(processId);
+            session.UnsubscribeSessionStatus(this);
             return TaskDone.Done;
         }
 
@@ -67,6 +79,23 @@ namespace PlayerProgression
         {
             subscribers.Unsubscribe(subscriber);
             return TaskDone.Done;
+        }
+
+        public void UpdateSessionStatus(Guid id, bool isAvailable)
+        {
+            if (sessionStatus.ContainsKey(id))
+            {
+                sessionStatus[id] = isAvailable;
+            }
+            else
+            {
+                throw new Exception("Unexpected state: processId SHOULD exist in dictionary.");
+            }
+        }
+        public Task<Guid> FindAvailableSession()
+        {
+            Guid id = sessionStatus.First((s) => s.Value == true).Key;
+            return Task.FromResult<Guid>(id);
         }
     }
 }

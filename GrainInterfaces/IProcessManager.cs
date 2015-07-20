@@ -7,7 +7,7 @@ using Orleans;
 
 namespace PlayerProgression
 {
-    public interface IProcessManager : IGrainWithGuidKey
+    public interface IProcessManager : IGrainWithIntegerKey
     {
         // Called by matcher: Needs a new dedicated server process.
         Task<Guid> CreateProcess();
@@ -21,6 +21,8 @@ namespace PlayerProgression
         Task SubscribeNotification(IProcessMgrObserver subscriber);
 
         Task UnsubscribeNotification(IProcessMgrObserver subscriber);
+
+        Task<Guid> FindAvailableSession();
     }
 
     public interface IProcessMgrObserver : IGrainObserver

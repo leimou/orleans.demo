@@ -14,7 +14,16 @@ namespace PlayerProgression
     /// </summary>
     public interface IGameGrain : IGrainWithGuidKey
     {
-        Task UpdateStatus(GameStatus status);
-        Task EndGame();
+        // Called by heartbeat, for updating statistics 
+        Task UpdateGameStatistics(GameStatus status);
+        Task GameStarts();
+        Task GameEnds();
+        Task SubscribeSessionStatus(IGameObserver subscriber);
+        Task UnsubscribeSessionStatus(IGameObserver subscriber);
+    }
+
+    public interface IGameObserver : IGrainObserver
+    {
+        void UpdateSessionStatus(Guid id, bool available);
     }
 }

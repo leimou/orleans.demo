@@ -28,6 +28,13 @@ namespace PlayerProgression
         }
     }
 
+    [Serializable]
+    public class SessionStatus
+    {
+        public Guid Id { get; set; }
+        public bool Available { get; set; }
+    }
+
     namespace Packet
     {
         [Serializable]
@@ -44,6 +51,12 @@ namespace PlayerProgression
 
         [Serializable]
         public class GameEnds
+        {
+            public Guid Game { get; set; }
+        }
+
+        [Serializable]
+        public class GameStarts
         {
             public Guid Game { get; set; }
         }

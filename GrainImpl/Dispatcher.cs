@@ -15,14 +15,21 @@ namespace PlayerProgression
         {
             Packet.Heartbeat packet = PacketSerializer.Deserialize<Packet.Heartbeat>(data);
             IGameGrain game = base.GrainFactory.GetGrain<IGameGrain>(packet.Game);
-            return game.UpdateStatus(packet.Status);
+            return game.UpdateGameStatistics(packet.Status);
         }
 
-        public Task EndGame(byte[] data)
+        public Task GameEnds(byte[] data)
         {
             Packet.GameEnds packet = PacketSerializer.Deserialize<Packet.GameEnds>(data);
             IGameGrain game = base.GrainFactory.GetGrain<IGameGrain>(packet.Game);
-            return game.EndGame();
+            return game.GameEnds();
+        }
+
+        public Task GameStarts(byte[] data)
+        {
+            Packet.GameStarts packet = PacketSerializer.Deserialize<Packet.GameStarts>(data);
+            IGameGrain game = base.GrainFactory.GetGrain<IGameGrain>(packet.Game);
+            return game.GameStarts();
         }
     }
 }
