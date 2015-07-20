@@ -6,6 +6,15 @@ using System.Threading.Tasks;
 
 namespace PlayerProgression
 {
+    public static class Constants
+    {
+        // Number of players within game sessions.
+        public const int SessionPlayers = 8;
+
+        // Number of seconds for a game session.
+        public const int SessionDuration = 20;
+    }
+
     [Serializable]
     public class Progression
     {

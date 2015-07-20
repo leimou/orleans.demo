@@ -37,7 +37,10 @@ namespace PlayerProgression
                         await base.GrainFactory.GetGrain<IPlayerGrain>(player).JoinGame(this);
                         players.Add(player);
                     }
-                    catch (Exception) {}
+                    catch (Exception ex) 
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
                 }
             }
 

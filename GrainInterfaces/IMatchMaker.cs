@@ -7,7 +7,7 @@ using Orleans;
 
 namespace PlayerProgression
 {
-    public interface IMarchMaker : IGrainWithIntegerKey
+    public interface IMatchMaker : IGrainWithIntegerKey
     {
         Task<Guid> QuickMarch(long playerId);
     }

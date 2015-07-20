@@ -51,7 +51,6 @@ namespace OrleansSilo
 
             hostDomain.DoCallBack(ShutdownSilo);
         }
-
         static void InitSilo(string[] args)
         {
             hostWrapper = new OrleansHostWrapper(args);
@@ -61,7 +60,6 @@ namespace OrleansSilo
                 Console.Error.WriteLine("Failed to initialize Orleans silo");
             }
         }
-
         static void ShutdownSilo()
         {
             if (hostWrapper != null)

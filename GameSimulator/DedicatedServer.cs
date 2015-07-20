@@ -17,12 +17,10 @@ namespace DedicatedServer
     public class Player
     {
         public int Id { get; set; }
-        public Guid Profile { get; set; }
         public PlayerStatus Status { get; private set; }
-        public Player(int id, Guid profile)
+        public Player(int id)
         {
             Id = id;
-            Profile = profile;
             Status = new PlayerStatus();
         }
         public void Kill(Player another)
@@ -41,7 +39,6 @@ namespace DedicatedServer
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat("Player: {0}\n", Id);
-            sb.AppendFormat("Profile: {0}\n", Profile);
             sb.Append(Status);
             return sb.ToString();
         }
@@ -65,14 +62,14 @@ namespace DedicatedServer
     // A game session runs in a separate thread.
     class Session
     {
-        public Guid Game { get; private set; }
+        public Guid Game { get; set; }
         private TimeSpan duration;
         private List<Player> players;
         private IDispatcher dispatcher;
 
-        public Session(int seconds)
+        public Session(Guid processId, int seconds)
         {
-            Game = Guid.NewGuid();
+            Game = processId;
             duration = new TimeSpan(0, 0, seconds);
             players = new List<Player>();
             dispatcher = GrainClient.GrainFactory.GetGrain<IDispatcher>(0);

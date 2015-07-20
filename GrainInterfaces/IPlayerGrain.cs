@@ -28,6 +28,6 @@ namespace PlayerProgression
         Task Logout();
 
         // Find a game session to join.
-        Task QuickMatch();
+        Task<Guid> QuickMatch();
     }
 }

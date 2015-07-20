@@ -55,7 +55,7 @@ namespace PlayerProgression
         }
         public Task Progress(Progression data)
         {
-            Console.WriteLine("Player.Progress called for player {0}", this.GetPrimaryKey());
+            // Console.WriteLine("Player.Progress called for player {0}", this.GetPrimaryKey());
 
             State.Kills += data.Kills - previous.Kills;
             State.Death += data.Death - previous.Death;
@@ -80,9 +80,11 @@ namespace PlayerProgression
             return WriteStateAsync();
         }
 
-        public Task QuickMatch()
+        public async Task<Guid> QuickMatch()
         {
-            throw new NotImplementedException();
+            IMatchMaker match = GrainFactory.GetGrain<IMatchMaker>(0);
+            Guid id = await match.QuickMarch(this.GetPrimaryKeyLong());
+            return id;
         }
     }
 }

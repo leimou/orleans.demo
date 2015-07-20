@@ -15,17 +15,39 @@ namespace DedicatedServer
         static void Main(string[] args)
         {
             GrainClient.Initialize("DevTestClientConfiguration.xml");
+            List<int> playerIds = new List<int>();
+            Guid pid;
 
-            // Number of players within game sessions.
-            int playerCount = 8;
-
-            // Number of seconds for a game session.
-            int sessionTime = 5;
-
-            Session session = new Session(sessionTime);
-            for (int i = 0; i < playerCount; i++)
+            if (args.Length == 0)
             {
-                session.AddPlayer(new Player(i, Guid.NewGuid()));
+                pid = Guid.NewGuid();
+                for (int i = 0; i < Constants.SessionPlayers; i++)
+                {
+                    playerIds.Add(i);
+                }
+            }
+            else
+            {
+                if (args.Length != Constants.SessionPlayers + 1)
+                {
+                    foreach (string arg in args)
+                    {
+                        Console.WriteLine(arg);
+                    }
+                    throw new ArgumentException("Wrong number of arugments", args.ToString());
+                }
+
+                pid = Guid.Parse(args[0]);
+                for (int i = 0; i < Constants.SessionPlayers; i++)
+                {
+                    playerIds.Add(Convert.ToInt32(args[i + 1]));
+                }
+            }
+
+            Session session = new Session(pid, Constants.SessionDuration);
+            for (int i = 0; i < Constants.SessionPlayers; i++)
+            {
+                session.AddPlayer(new Player(playerIds[i]));
             }
             Thread simulation = new Thread(new ThreadStart(session.Run));
             simulation.Start();

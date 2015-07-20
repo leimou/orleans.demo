@@ -44,7 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IMarchMaker.cs" />
+    <Compile Include="IMatchMaker.cs" />
     <Compile Include="IProcessManager.cs" />
     <Compile Include="Serializer.cs" />
     <Compile Include="IGameGrain.cs" />
@@ -57,9 +57,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PacketDefinition\PacketDefinition.csproj">
+    <ProjectReference Include="..\PacketDefinition\Common.csproj">
       <Project>{e1f29ca6-0239-4938-9c77-91f2a3a454f2}</Project>
-      <Name>PacketDefinition</Name>
+      <Name>Common</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

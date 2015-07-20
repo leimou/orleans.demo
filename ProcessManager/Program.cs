@@ -30,7 +30,7 @@ namespace DedicatedServer
             await grain.SubscribeNotification(grainObserver);
         }
 
-        public void CreateInstance() 
+        public void CreateInstance(List<long> players) 
         {
             // Create dedicated server instance.
             Process process = new Process();
@@ -43,6 +43,13 @@ namespace DedicatedServer
                 process.StartInfo.UseShellExecute = true;
                 process.StartInfo.CreateNoWindow = false;
                 process.EnableRaisingEvents = true;
+                
+                process.StartInfo.Arguments += processId.ToString();
+                for (int i = 0; i < players.Count; i++)
+                {
+                    process.StartInfo.Arguments += " ";
+                    process.StartInfo.Arguments += players[i].ToString();
+                }
                 process.Start();
 
                 lock (processMap)
@@ -58,6 +65,7 @@ namespace DedicatedServer
                         Console.WriteLine(ex.Message);
                     }
                 }
+                Console.WriteLine("Created new process: " + process.Handle);
             }
             catch (Exception e)
             {
@@ -107,9 +115,9 @@ namespace DedicatedServer
         {
             manager = mgr;
         }
-        public void CreateProcess()
+        public void CreateProcess(List<long> players)
         {
-            manager.CreateInstance();
+            manager.CreateInstance(players);
         }
     }
 }

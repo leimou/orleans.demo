@@ -12,13 +12,15 @@ namespace PlayerProgression
     class ProcessManager : Grain, IProcessManager, IGameObserver
     {
         private ObserverSubscriptionManager<IProcessMgrObserver> subscribers;
-        private TaskCompletionSource<Guid> source;
+        private Queue<TaskCompletionSource<Guid>> source;
         private Dictionary<Guid, bool> sessionStatus;
 
         public override Task OnActivateAsync()
         {
             subscribers = new ObserverSubscriptionManager<IProcessMgrObserver>();
             sessionStatus = new Dictionary<Guid, bool>();
+            source = new Queue<TaskCompletionSource<Guid>>();
+
             return base.OnActivateAsync();
         }
         public override Task OnDeactivateAsync()
@@ -27,26 +29,18 @@ namespace PlayerProgression
             return base.OnDeactivateAsync();
         }
         // Called by matcher: Needs a new dedicated server process.
-        public async Task<Guid> CreateProcess()
+        public async Task<Guid> CreateProcess(List<long> players)
         {
-            if (source == null) 
-            {
-                source = new TaskCompletionSource<Guid>();
-            }
-            else
-            {
-                return await source.Task;
-            }
+            source.Enqueue(new TaskCompletionSource<Guid>());
 
-            subscribers.Notify((s) => s.CreateProcess());
-            return await source.Task;
+            subscribers.Notify((s) => s.CreateProcess(players));
+            return await source.Dequeue().Task;
         }
 
         // Reported by dedicated server manager: process created, with processId as id.
         public Task ProcessCreated(Guid processId)
         {
-            source.SetResult(processId);
-            source = null;
+            source.Peek().SetResult(processId);
 
             IGameGrain session = GrainFactory.GetGrain<IGameGrain>(processId);
             session.SubscribeSessionStatus(this);
@@ -94,8 +88,20 @@ namespace PlayerProgression
         }
         public Task<Guid> FindAvailableSession()
         {
-            Guid id = sessionStatus.First((s) => s.Value == true).Key;
-            return Task.FromResult<Guid>(id);
+            if (sessionStatus.Count == 0)
+            {
+                return Task.FromResult<Guid>(Guid.Empty);
+            }
+            else
+            {
+                foreach (var pair in sessionStatus)
+                {
+                    if (pair.Value == true) {
+                        return Task.FromResult(pair.Key);
+                    }
+                }
+                return Task.FromResult<Guid>(Guid.Empty);
+            }
         }
     }
 }

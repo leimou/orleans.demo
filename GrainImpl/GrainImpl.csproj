@@ -44,7 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MarchMaker.cs" />
+    <Compile Include="MatchMaker.cs" />
     <Compile Include="ProcessManager.cs" />
     <Compile Include="GameGrain.cs" />
     <Compile Include="PlayerGrain.cs" />
@@ -60,9 +60,9 @@
       <Project>{2a1c39ad-3cce-4f43-a84b-c0491bef1818}</Project>
       <Name>GrainInterfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PacketDefinition\PacketDefinition.csproj">
+    <ProjectReference Include="..\PacketDefinition\Common.csproj">
       <Project>{e1f29ca6-0239-4938-9c77-91f2a3a454f2}</Project>
-      <Name>PacketDefinition</Name>
+      <Name>Common</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
