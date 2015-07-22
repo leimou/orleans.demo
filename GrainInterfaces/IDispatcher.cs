@@ -12,7 +12,6 @@ namespace PlayerProgression
     {
         Task Heartbeat(byte[] data);
         Task GameEnds(byte[] data);
-
         Task GameStarts(byte[] data);
     }
 }

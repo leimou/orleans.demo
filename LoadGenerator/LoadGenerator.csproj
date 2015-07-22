@@ -55,10 +55,6 @@
       <Project>{2a1c39ad-3cce-4f43-a84b-c0491bef1818}</Project>
       <Name>GrainInterfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PacketDefinition\Common.csproj">
-      <Project>{e1f29ca6-0239-4938-9c77-91f2a3a454f2}</Project>
-      <Name>Common</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
