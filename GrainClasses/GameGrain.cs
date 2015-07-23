@@ -33,7 +33,7 @@ namespace PlayerProgression
             return base.OnDeactivateAsync();
         }
 
-        public void ProducePlayerGameEvents(long playerId)
+        private void ProducePlayerGameEvents(long playerId)
         {
             // Become producer of event stream of this player.
             var player = base.GrainFactory.GetGrain<IPlayerGrain>(playerId);
@@ -101,8 +101,6 @@ namespace PlayerProgression
                 }
             }
             await Task.WhenAll(promises);
-
-            return;
         }
 
         public async Task GameStarts(List<long> playerList)
@@ -132,7 +130,6 @@ namespace PlayerProgression
             {
                 RemovePlayer(player);
             }
-
             // Notify process manager the status of this session has changed to available again.
             subscribers.Notify((s) => s.UpdateSessionStatus(this.GetPrimaryKey(), true));
         }

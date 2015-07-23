@@ -17,11 +17,11 @@ namespace DedicatedServer
     public class Player
     {
         public int Id { get; set; }
-        public PlayerStatus Status { get; private set; }
+        public Progression Status { get; private set; }
         public Player(int id)
         {
             Id = id;
-            Status = new PlayerStatus();
+            Status = new Progression();
         }
         public void Kill(Player another)
         {
@@ -39,25 +39,13 @@ namespace DedicatedServer
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat("Player: {0}\n", Id);
-            sb.Append(Status);
+            sb.AppendFormat("Experience gained: {0}\n", Status.Experience);
+            sb.AppendFormat("Kills: {0}\n", Status.Kills);
+            sb.AppendFormat("Death: {0}\n", Status.Death);
             return sb.ToString();
         }
     }
-    [Serializable]
-    public class PlayerStatus
-    {
-        public int Experience { get; set; }
-        public int Kills { get; set; }
-        public int Death { get; set; }
-        public override string ToString()
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendFormat("Experience gained: {0}\n", Experience);
-            sb.AppendFormat("Kills: {0}\n", Kills);
-            sb.AppendFormat("Death: {0}\n", Death);
-            return sb.ToString();
-        }
-    }
+
     // Game simulator simulates a game session, lasting for specified seconds.
     // A game session runs in a separate thread.
     class Session

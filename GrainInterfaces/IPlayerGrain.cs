@@ -9,9 +9,6 @@ namespace PlayerProgression
 {
     public interface IPlayerGrain : IGrainWithIntegerKey
     {
-        // Get the current game a player has joined.
-        Task<IGameGrain> GetGame();
-
         // Join an existing game session.
         Task JoinGame(IGameGrain game);
 

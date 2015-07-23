@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Orleans;
 using Orleans.Providers;
 using Orleans.Streams;
+using System.Threading;
 
 namespace PlayerProgression
 {
@@ -19,6 +20,7 @@ namespace PlayerProgression
     [StorageProvider(ProviderName = "TestStore")]
     public class Player : Grain<PlayerState>, IPlayerGrain, IAsyncObserver<Progression>
     {
+        private IDisposable syncTimer;
         private IGameGrain currentGame;
         private Progression previous;
         private IAsyncStream<Progression> eventStream;
@@ -40,10 +42,6 @@ namespace PlayerProgression
             }
         }
 
-        public Task<IGameGrain> GetGame()
-        {
-            return Task.FromResult(currentGame);
-        }
         public Task JoinGame(IGameGrain game)
         {
             currentGame = game;
@@ -53,10 +51,20 @@ namespace PlayerProgression
             {
                 previous = new Progression();
             }
+            syncTimer = base.RegisterTimer(TimerCallback, null, TimeSpan.Zero, TimeSpan.FromSeconds(2));
+
             return TaskDone.Done;
         }
+
+        private Task TimerCallback(object arg)
+        {
+            return WriteStateAsync();
+        }
+
         public Task LeaveGame(IGameGrain game)
         {
+            syncTimer.Dispose();
+
             currentGame = null;
             Console.WriteLine("Player {0} left game {1}", this.GetPrimaryKey(), game.GetPrimaryKey());
 
@@ -95,7 +103,7 @@ namespace PlayerProgression
             previous.Death = data.Death;
             previous.Experience = data.Experience;
 
-            return WriteStateAsync();
+            return TaskDone.Done;
         }
     }
 }
