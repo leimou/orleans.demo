@@ -2,12 +2,16 @@
 <OrleansConfiguration xmlns="urn:orleans">
   <Globals>
     <StorageProviders>
+      <Provider Type="Orleans.Storage.MemoryStorage" Name="PubSubStore" />
       <!-- To test the sample storage providers, uncomment one of the following two lines:
       <Provider Type="Orleans.Storage.MemoryStorage" Name="MemoryStore" />
       <Provider Type="Samples.StorageProviders.MongoDBStorage" Name="TestStore" Database="orleanssamples" ConnectionString="mongodb://localhost:27017/" />
       <Provider Type="Samples.StorageProviders.OrleansFileStorage" Name="TestStore" RootDirectory=".\Samples.FileStorage"/>       -->
       <Provider Type="Samples.StorageProviders.OrleansFileStorage" Name="TestStore" RootDirectory=".\Samples.FileStorage"/>
     </StorageProviders>
+    <StreamProviders>
+      <Provider Type="Orleans.Providers.Streams.SimpleMessageStream.SimpleMessageStreamProvider" Name="SMSProvider" FireAndForgetDelivery="false"/>
+    </StreamProviders>
     <SeedNode Address="localhost" Port="11111" />
   </Globals>
   <Defaults>

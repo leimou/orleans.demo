@@ -11,14 +11,14 @@ namespace PlayerProgression
     [Reentrant]
     class MatchMaker : Grain, IMatchMaker
     {
-        private int index = 0;
+        // private int index = 0;
         private Queue<long> waitingUserList;
         Queue<TaskCompletionSource<Guid>> source;
 
         public override Task OnActivateAsync()
         {
             waitingUserList = new Queue<long>();
-            index = 0;
+            // index = 0;
 
             source = new Queue<TaskCompletionSource<Guid>>();
             source.Enqueue(new TaskCompletionSource<Guid>());
@@ -33,7 +33,8 @@ namespace PlayerProgression
             if (waitingUserList.Count < Constants.SessionPlayers)
             {
                 Console.WriteLine("Await 1");
-                return await source.ElementAt(index).Task;
+                // return await source.ElementAt(index).Task;
+                return await source.Last().Task;
             }
             else
             {
@@ -48,13 +49,13 @@ namespace PlayerProgression
                     players.Add(player);
                 }
                 Console.WriteLine("Await 2");
-                index++;
+                // index++;
                 source.Enqueue(new TaskCompletionSource<Guid>());
 
                 Guid id = await mgr.CreateProcess(players);
-                Console.WriteLine("Await 3");
+                Console.WriteLine("Await 3: ", id);
                 source.Dequeue().SetResult(id);
-                index--;
+                // index--;
 
                 return id;
             }

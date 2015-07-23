@@ -18,15 +18,6 @@ namespace PlayerProgression
         // Leave the current game session.
         Task LeaveGame(IGameGrain game);
 
-        // Update player progression data.
-        Task Progress(Progression data);
-    
-        // Login
-        Task Login();
-
-        // Logout
-        Task Logout();
-
         // Find a game session to join.
         Task<Guid> QuickMatch();
     }

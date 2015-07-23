@@ -29,7 +29,7 @@ namespace PlayerProgression
         {
             Packet.GameStarts packet = PacketSerializer.Deserialize<Packet.GameStarts>(data);
             IGameGrain game = base.GrainFactory.GetGrain<IGameGrain>(packet.Game);
-            return game.GameStarts();
+            return game.GameStarts(packet.Players);
         }
     }
 }

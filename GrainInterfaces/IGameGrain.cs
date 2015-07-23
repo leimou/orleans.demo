@@ -16,7 +16,7 @@ namespace PlayerProgression
     {
         // Called by heartbeat, for updating statistics 
         Task UpdateGameStatistics(GameStatus status);
-        Task GameStarts();
+        Task GameStarts(List<long> players);
         Task GameEnds();
         Task SubscribeSessionStatus(IGameObserver subscriber);
         Task UnsubscribeSessionStatus(IGameObserver subscriber);

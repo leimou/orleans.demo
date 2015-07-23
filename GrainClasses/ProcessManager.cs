@@ -9,6 +9,7 @@ using Orleans.Streams;
 
 namespace PlayerProgression
 {
+    // TODO: Use consistent hashing for process instance look up.
     [Reentrant]
     class ProcessManager : Grain, IProcessManager, IGameObserver
     {
@@ -24,11 +25,13 @@ namespace PlayerProgression
 
             return base.OnActivateAsync();
         }
+
         public override Task OnDeactivateAsync()
         {
             subscribers.Clear();
             return base.OnDeactivateAsync();
         }
+
         // Called by matcher: Needs a new dedicated server process.
         public async Task<Guid> CreateProcess(List<long> players)
         {

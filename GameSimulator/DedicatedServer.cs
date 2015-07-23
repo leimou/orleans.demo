@@ -66,7 +66,6 @@ namespace DedicatedServer
         private TimeSpan duration;
         private List<Player> players;
         private IDispatcher dispatcher;
-
         public Session(Guid processId, int seconds)
         {
             Game = processId;
@@ -78,7 +77,7 @@ namespace DedicatedServer
         }
         public void Run()
         {
-            SendGameStarts();
+            SendGameStarts(players);
 
             Timer timer = new Timer(HeartbeatCallback, players, 0, 2000);
             Stopwatch s = new Stopwatch();
@@ -101,9 +100,12 @@ namespace DedicatedServer
                 Thread.Sleep(TimeSpan.FromMilliseconds(rnd.Next(0, 200)));
             }
             s.Stop();
-
             timer.Dispose();
-            Finish();
+
+            // At the end of game session, send the last heartbeat, as a summary of the game.
+            SendHeartbeat(players);
+            SendGameEnds();
+            DisplaySummary();
         }
         void HeartbeatCallback(object state)
         {
@@ -129,10 +131,15 @@ namespace DedicatedServer
             data.Game = this.Game;
             dispatcher.Heartbeat(PacketSerializer.Serialize(data));
         }
-        void SendGameStarts()
+        void SendGameStarts(List<Player> playerList)
         {
-            GameStarts data = new GameStarts();
-            data.Game = this.Game;
+            List<long> players = new List<long>();
+            foreach (Player player in playerList)
+            {
+                players.Add(player.Id);
+            }
+
+            GameStarts data = new GameStarts(this.Game, players);
             dispatcher.GameStarts(PacketSerializer.Serialize(data)).Wait();
         }
 
@@ -153,15 +160,12 @@ namespace DedicatedServer
                 return (T) formatter.Deserialize(ms);
             }
         }
-        void Finish()
+        void DisplaySummary()
         {
             foreach (Player player in players)
             {
                 Console.WriteLine(player.Summary());
             }
-            // At the end of game session, send the last heartbeat, as a summary of the game.
-            SendHeartbeat(players);
-            SendGameEnds();
         }
         public void AddPlayer(Player player)
         {
