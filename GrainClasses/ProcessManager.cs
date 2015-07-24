@@ -33,12 +33,14 @@ namespace PlayerProgression
         }
 
         // Called by matcher: Needs a new dedicated server process.
-        public async Task<Guid> CreateProcess(List<long> players)
+        public async Task<Guid> CreateProcess()
         {
             source.Enqueue(new TaskCompletionSource<Guid>());
+            subscribers.Notify((s) => s.CreateProcess());
 
-            subscribers.Notify((s) => s.CreateProcess(players));
-            return await source.Dequeue().Task;
+            var id = await source.Last().Task;
+            source.Dequeue();
+            return id;
         }
 
         // Reported by dedicated server manager: process created, with processId as id.
@@ -90,6 +92,7 @@ namespace PlayerProgression
                 throw new Exception("Unexpected state: processId SHOULD exist in dictionary.");
             }
         }
+        
         public Task<Guid> FindAvailableSession()
         {
             if (sessionStatus.Count == 0)
@@ -106,6 +109,18 @@ namespace PlayerProgression
                 }
                 return Task.FromResult<Guid>(Guid.Empty);
             }
+        }
+
+        public Task AddPlayer(Guid gameId, long playerId)
+        {
+            subscribers.Notify((s) => s.AddPlayer(gameId, playerId));
+            return TaskDone.Done;
+        }
+
+        public Task StartGame(Guid gameId)
+        {
+            subscribers.Notify((s) => s.StartGame(gameId));
+            return TaskDone.Done;
         }
     }
 }

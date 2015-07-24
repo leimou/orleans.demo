@@ -10,31 +10,35 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using PlayerProgression;
 using PlayerProgression.Packet;
+using PlayerProgression.Command;
+using Grpc.Core;
 
-namespace DedicatedServer
+namespace PlayerProgression
 {
     [Serializable]
-    public class Player
+    internal class Player
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public Progression Status { get; private set; }
-        public Player(int id)
+        
+        public Player(long id)
         {
             Id = id;
             Status = new Progression();
         }
+        
         public void Kill(Player another)
         {
-            // Console.WriteLine("Player {0} kills player {1}", this.Id, another.Id);
             Status.Kills++;
             Status.Experience += 100;
             another.Die();
         }
-        void Die()
+        
+        private void Die()
         {
-            // Console.WriteLine("Player {0} died", this.Id);
             Status.Death++;
         }
+        
         public string Summary()
         {
             StringBuilder sb = new StringBuilder();
@@ -46,23 +50,23 @@ namespace DedicatedServer
         }
     }
 
-    // Game simulator simulates a game session, lasting for specified seconds.
-    // A game session runs in a separate thread.
-    class Session
+    internal class SessionImpl
     {
         public Guid Game { get; set; }
         private TimeSpan duration;
         private List<Player> players;
         private IDispatcher dispatcher;
-        public Session(Guid processId, int seconds)
+
+        public SessionImpl(Guid processId, int seconds)
         {
             Game = processId;
             duration = new TimeSpan(0, 0, seconds);
             players = new List<Player>();
             dispatcher = GrainClient.GrainFactory.GetGrain<IDispatcher>(0);
 
-            Console.WriteLine("Create new GameSession {0}", Game);
+            Console.WriteLine("Created new GameSession {0}", Game);
         }
+
         public void Run()
         {
             SendGameStarts(players);
@@ -95,7 +99,13 @@ namespace DedicatedServer
             SendGameEnds();
             DisplaySummary();
         }
-        void HeartbeatCallback(object state)
+
+        public void AddPlayer(long playerId)
+        {
+            players.Add(new Player(playerId));
+        }
+
+        private void HeartbeatCallback(object state)
         {
             List<Player> playerClone = null;
             lock (players)
@@ -105,7 +115,8 @@ namespace DedicatedServer
             }
             SendHeartbeat(playerClone);
         }
-        void SendHeartbeat(List<Player> playerList)
+
+        private void SendHeartbeat(List<Player> playerList)
         {
             Heartbeat data = new Heartbeat();
             foreach (Player player in playerList) 
@@ -119,7 +130,8 @@ namespace DedicatedServer
             data.Game = this.Game;
             dispatcher.Heartbeat(PacketSerializer.Serialize(data));
         }
-        void SendGameStarts(List<Player> playerList)
+
+        private void SendGameStarts(List<Player> playerList)
         {
             List<long> players = new List<long>();
             foreach (Player player in playerList)
@@ -131,12 +143,13 @@ namespace DedicatedServer
             dispatcher.GameStarts(PacketSerializer.Serialize(data)).Wait();
         }
 
-        void SendGameEnds()
+        private void SendGameEnds()
         {
             GameEnds data = new GameEnds();
             data.Game = this.Game;
             dispatcher.GameEnds(PacketSerializer.Serialize(data)).Wait();
         }
+
         private static T DeepClone<T>(T obj)
         {
             using (var ms = new MemoryStream()) 
@@ -148,18 +161,12 @@ namespace DedicatedServer
                 return (T) formatter.Deserialize(ms);
             }
         }
-        void DisplaySummary()
+
+        private void DisplaySummary()
         {
             foreach (Player player in players)
             {
                 Console.WriteLine(player.Summary());
-            }
-        }
-        public void AddPlayer(Player player)
-        {
-            if (player != null)
-            {
-                players.Add(player);
             }
         }
     }

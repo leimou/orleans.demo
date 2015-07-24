@@ -14,6 +14,7 @@ namespace PlayerProgression
         // Number of seconds for a game session.
         public const int SessionDuration = 20;
 
+        // Stream provider to use.
         public const string StreamProvider = "SMSProvider";
     }
 
@@ -37,13 +38,6 @@ namespace PlayerProgression
         {
             Status = new Dictionary<long, Progression>();
         }
-    }
-
-    [Serializable]
-    public class SessionStatus
-    {
-        public Guid Id { get; set; }
-        public bool Available { get; set; }
     }
 
     namespace Packet
@@ -71,25 +65,12 @@ namespace PlayerProgression
         {
             public Guid Game { get; set; }
             public List<long> Players { get; set; }
-            
-            public GameStarts(Guid game, List<long> players) 
+
+            public GameStarts(Guid game, List<long> players)
             {
                 Game = game;
                 Players = players;
             }
-        }
-
-        public class GameEvent
-        {
-            public enum Type
-            {
-                Headshot,
-                Dead,
-            }
-
-            public Guid Game { get; set; }
-            public long PlayerId { get; set; }
-            public Type Event { get; set; }
         }
     }
 }

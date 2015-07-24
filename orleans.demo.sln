@@ -5,7 +5,7 @@ VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrainInterfaces", "GrainInterfaces\GrainInterfaces.csproj", "{2A1C39AD-3CCE-4F43-A84B-C0491BEF1818}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DedicatedServer", "GameSimulator\DedicatedServer.csproj", "{6E49FD4F-BCE1-4974-866B-D9D4C1E178CD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SessionLauncher", "GameSimulator\SessionLauncher.csproj", "{6E49FD4F-BCE1-4974-866B-D9D4C1E178CD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrleansSilo", "OrleansSilo\OrleansSilo.csproj", "{0031B856-96D9-4DFA-A959-B140BDCF52C1}"
 EndProject

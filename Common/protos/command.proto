@@ -1,0 +1,24 @@
+syntax = "proto2";
+
+package PlayerProgression.Command;
+
+service Controller {
+	rpc AddPlayer (AddPlayerRequest) returns (AddPlayerReply);
+	rpc StartGame (StartGameRequest) returns (StartGameReply);
+}
+
+message AddPlayerRequest {
+	required int32 playerId = 1;
+}
+
+message AddPlayerReply {
+	required bool result = 1;
+}
+
+message StartGameRequest {
+
+}
+
+message StartGameReply {
+	required bool result = 1;
+}
