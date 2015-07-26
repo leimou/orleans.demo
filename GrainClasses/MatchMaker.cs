@@ -11,22 +11,55 @@ namespace PlayerProgression
     [Reentrant]
     class MatchMaker : Grain, IMatchMaker
     {
-        private Queue<TaskCompletionSource<Guid>> source;
+        private Queue<TaskCompletionSource<Guid>> tasksQueue;
+        private Queue<long> matchQueue;
+        private Queue<Guid> gamesQueue;
         private IProcessManager mgr;
+        
         
         public override Task OnActivateAsync()
         {
             mgr = GrainFactory.GetGrain<IProcessManager>(0);
+            tasksQueue = new Queue<TaskCompletionSource<Guid>>();
+            gamesQueue = new Queue<Guid>();
+            matchQueue = new Queue<long>();
             return TaskDone.Done;
         }
 
-        public async Task<Guid> QuickMarch(long playerId)
+        public async Task<Guid> QuickMatch(long playerId)
         {
-            IProcessManager mgr = GrainFactory.GetGrain<IProcessManager>(0);
-            Guid id = await mgr.CreateProcess();
-            Console.WriteLine("Await 3: ", id);
-            source.Dequeue().SetResult(id);
-            return id;
+            matchQueue.Enqueue(playerId);
+            if (tasksQueue.Count == 0)
+            {
+                tasksQueue.Enqueue(new TaskCompletionSource<Guid>());
+            }
+
+            if (matchQueue.Count % Constants.PlayersPerSession != 0)
+            {
+                return await tasksQueue.Last().Task;
+            }
+            else
+            {
+                tasksQueue.Enqueue(new TaskCompletionSource<Guid>());
+                gamesQueue.Enqueue(await mgr.CreateProcess());
+
+                List<long> players = new List<long>();
+                for (int i = 0; i < Constants.PlayersPerSession; i++)
+                {
+                    players.Add(matchQueue.Dequeue());
+                }
+
+                Guid currentGame = gamesQueue.Dequeue();
+                List<Task> promises = new List<Task>();
+                for (int i = 0; i < Constants.PlayersPerSession; i++)
+                {
+                    promises.Add(mgr.AddPlayer(currentGame, players[i]));
+                }
+                tasksQueue.Dequeue().SetResult(currentGame);
+                await mgr.StartGame(currentGame);
+
+                return currentGame;
+            }
         }
     }
 }

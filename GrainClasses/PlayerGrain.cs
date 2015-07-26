@@ -77,7 +77,7 @@ namespace PlayerProgression
         public async Task<Guid> QuickMatch()
         {
             IMatchMaker match = GrainFactory.GetGrain<IMatchMaker>(0);
-            Guid id = await match.QuickMarch(this.GetPrimaryKeyLong());
+            Guid id = await match.QuickMatch(this.GetPrimaryKeyLong());
             return id;
         }
 

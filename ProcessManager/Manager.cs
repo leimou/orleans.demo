@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Diagnostics;
+﻿using Grpc.Core;
 using Orleans;
-using PlayerProgression;
-using Grpc.Core;
 using PlayerProgression.Command;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading;
 
 namespace PlayerProgression
 {
@@ -55,7 +52,12 @@ namespace PlayerProgression
                 process.StartInfo.Arguments += processId.ToString();
                 process.StartInfo.Arguments += " ";
                 process.StartInfo.Arguments += port.ToString();
+                process.Start();
 
+                // Sleep 2 seconds for simulating the delay of creating a game process.
+                Thread.Sleep(2000);
+
+                Console.WriteLine("Connecting to 127.0.0.1:{0}", port);
                 var channel = new Channel(string.Format("127.0.0.1:{0}", port));
                 var client = Controller.NewStub(channel);
 
@@ -68,6 +70,8 @@ namespace PlayerProgression
                 }
                 GrainClient.GrainFactory.GetGrain<IProcessManager>(0).ProcessCreated(processId);
                 Console.WriteLine("Created new process: " + process.Handle);
+
+                port++;
             }
             catch (Exception e)
             {
@@ -126,7 +130,7 @@ namespace PlayerProgression
     class Program
     {
         static void Main(string[] args)
-        {
+      {
             GrpcEnvironment.Initialize();
             GrainClient.Initialize("DevTestClientConfiguration.xml");
 

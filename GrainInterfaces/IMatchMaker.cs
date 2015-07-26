@@ -9,6 +9,6 @@ namespace PlayerProgression
 {
     public interface IMatchMaker : IGrainWithIntegerKey
     {
-        Task<Guid> QuickMarch(long playerId);
+        Task<Guid> QuickMatch(long playerId);
     }
 }

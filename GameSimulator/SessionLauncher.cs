@@ -19,20 +19,14 @@ namespace PlayerProgression
             List<long> playerIds = new List<long>();
             SessionManager manager;
             Guid gameId;
-            int port = 20000;
+            int port = 0;
 
-            if (args.Length == 0)
+            if (args.Length != 2)
             {
-                gameId = Guid.NewGuid();
-                manager = new SessionManager(gameId, port);
-                manager.RunOnce();
+                throw new ArgumentException("Wrong number of arugments", args.ToString());
             }
-            else
+            else 
             {
-                if (args.Length != 2)
-                {
-                    throw new ArgumentException("Wrong number of arugments", args.ToString());
-                }
                 gameId = Guid.Parse(args[0]);
                 port = Convert.ToInt16(args[1]);
 
