@@ -33,7 +33,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Orleans">
-      <HintPath>$(SolutionDir)packages\Microsoft.Orleans.Core.1.0.9\lib\net45\Orleans.dll</HintPath>
+      <HintPath>..\Orleans\Binaries\Release\Orleans.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -53,9 +53,6 @@
     <Compile Include="IDispatcher.cs" />
     <Compile Include="Properties\orleans.codegen.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">

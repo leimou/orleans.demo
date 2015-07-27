@@ -16,7 +16,6 @@ namespace PlayerProgression
         private Queue<Guid> gamesQueue;
         private IProcessManager mgr;
         
-        
         public override Task OnActivateAsync()
         {
             mgr = GrainFactory.GetGrain<IProcessManager>(0);
