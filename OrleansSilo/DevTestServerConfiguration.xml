@@ -13,6 +13,10 @@
       <Provider Type="Orleans.Providers.Streams.SimpleMessageStream.SimpleMessageStreamProvider" Name="SMSProvider" FireAndForgetDelivery="false"/>
     </StreamProviders>
     <SeedNode Address="localhost" Port="11111" />
+    <SystemStore
+      DataConnectionString="172.17.15.27" 
+      DeploymentId="crysis"
+      SystemStoreType="ZooKeeper"/>
   </Globals>
   <Defaults>
     <Networking Address="localhost" Port="11111" />
