@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Orleans.Serialization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -37,6 +38,18 @@ namespace PlayerProgression
         public GameStatus()
         {
             Status = new Dictionary<long, Progression>();
+        }
+    }
+
+    public static class PacketSerializer
+    {
+        public static byte[] Serialize(object o)
+        {
+            return SerializationManager.SerializeToByteArray(o);
+        }
+        public static T Deserialize<T>(byte[] data)
+        {
+            return SerializationManager.DeserializeFromByteArray<T>(data);
         }
     }
 
