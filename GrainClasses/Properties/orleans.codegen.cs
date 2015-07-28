@@ -16,6 +16,26 @@
 #pragma warning disable 1591
 #pragma warning disable 1998
 
+namespace PlayerProgression.Game
+{
+    using Orleans;
+    using System;
+    using System.Runtime.InteropServices;
+    using System.Runtime.Serialization;
+    
+}
+namespace PlayerProgression.ProcessManagement
+{
+    using Orleans;
+    using System;
+    using System.Runtime.InteropServices;
+    using System.Runtime.Serialization;
+    
+}
+namespace PlayerProgression.Player
+{
+    
+}
 namespace PlayerProgression
 {
     using Orleans;

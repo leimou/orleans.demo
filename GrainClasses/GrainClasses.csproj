@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Game\GameRoom.cs" />
     <Compile Include="Game\LeaderBoard.cs" />
     <Compile Include="Game\MatchMaker.cs" />
     <Compile Include="Process\ProcessManager.cs" />

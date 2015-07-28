@@ -16,7 +16,7 @@
 #pragma warning disable 1591
 #pragma warning disable 1998
 
-namespace PlayerProgression
+namespace PlayerProgression.Game
 {
     using System;
     using System.Net;
@@ -24,13 +24,373 @@ namespace PlayerProgression
     using System.Runtime.Serialization.Formatters.Binary;
     using System.IO;
     using System.Collections.Generic;
-    using System.Reflection;
-    using Orleans.Serialization;
-    using PlayerProgression;
     using Orleans;
     using Orleans.Runtime;
     using Orleans.Core;
     
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    public class GameRoomFactory
+    {
+        
+
+                        [System.Obsolete("This method has been deprecated. Please use GrainFactory.GetGrain<IGameRoom> instead.")]
+                        public static IGameRoom GetGrain(System.Guid primaryKey)
+                        {
+                            return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(IGameRoom), primaryKey));
+                        }
+
+                        [System.Obsolete("This method has been deprecated. Please use GrainFactory.GetGrain<IGameRoom> instead.")]
+                        public static IGameRoom GetGrain(System.Guid primaryKey, string grainClassNamePrefix)
+                        {
+                            return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(IGameRoom), primaryKey, grainClassNamePrefix));
+                        }
+
+            public static IGameRoom Cast(global::Orleans.Runtime.IAddressable grainRef)
+            {
+                
+                return GameRoomReference.Cast(grainRef);
+            }
+        
+        [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
+        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+        [System.SerializableAttribute()]
+        [global::Orleans.CodeGeneration.GrainReferenceAttribute("PlayerProgression.Game.IGameRoom")]
+        internal class GameRoomReference : global::Orleans.Runtime.GrainReference, global::Orleans.Runtime.IAddressable, PlayerProgression.Game.IGameRoom
+        {
+            
+
+            public static IGameRoom Cast(global::Orleans.Runtime.IAddressable grainRef)
+            {
+                
+                return (IGameRoom) global::Orleans.Runtime.GrainReference.CastInternal(typeof(IGameRoom), (global::Orleans.Runtime.GrainReference gr) => { return new GameRoomReference(gr);}, grainRef, -1756075968);
+            }
+            
+            protected internal GameRoomReference(global::Orleans.Runtime.GrainReference reference) : 
+                    base(reference)
+            {
+            }
+            
+            protected internal GameRoomReference(SerializationInfo info, StreamingContext context) : 
+                    base(info, context)
+            {
+            }
+            
+            protected override int InterfaceId
+            {
+                get
+                {
+                    return -1756075968;
+                }
+            }
+            
+            public override string InterfaceName
+            {
+                get
+                {
+                    return "PlayerProgression.Game.IGameRoom";
+                }
+            }
+            
+            [global::Orleans.CodeGeneration.CopierMethodAttribute()]
+            public static object _Copier(object original)
+            {
+                GameRoomReference input = ((GameRoomReference)(original));
+                return ((GameRoomReference)(global::Orleans.Runtime.GrainReference.CopyGrainReference(input)));
+            }
+            
+            [global::Orleans.CodeGeneration.SerializerMethodAttribute()]
+            public static void _Serializer(object original, global::Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
+            {
+                GameRoomReference input = ((GameRoomReference)(original));
+                global::Orleans.Runtime.GrainReference.SerializeGrainReference(input, stream, expected);
+            }
+            
+            [global::Orleans.CodeGeneration.DeserializerMethodAttribute()]
+            public static object _Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
+            {
+                return GameRoomReference.Cast(((global::Orleans.Runtime.GrainReference)(global::Orleans.Runtime.GrainReference.DeserializeGrainReference(expected, stream))));
+            }
+            
+            public override bool IsCompatible(int interfaceId)
+            {
+                return (interfaceId == this.InterfaceId);
+            }
+            
+            protected override string GetMethodName(int interfaceId, int methodId)
+            {
+                return GameRoomMethodInvoker.GetMethodName(interfaceId, methodId);
+            }
+            
+            System.Threading.Tasks.Task PlayerProgression.Game.IGameRoom.AddPlayer(long @playerId)
+            {
+
+                return base.InvokeMethodAsync<object>(-1839323170, new object[] {@playerId} );
+            }
+            
+            System.Threading.Tasks.Task PlayerProgression.Game.IGameRoom.StartGame()
+            {
+
+                return base.InvokeMethodAsync<object>(797923165, null );
+            }
+            
+            System.Threading.Tasks.Task PlayerProgression.Game.IGameRoom.Subscribe(PlayerProgression.Game.IRoomObserver @observer)
+            {
+global::Orleans.CodeGeneration.GrainFactoryBase.CheckGrainObserverParamInternal(@observer);
+
+                return base.InvokeMethodAsync<object>(-268291772, new object[] {@observer is global::Orleans.Grain ? @observer.AsReference<PlayerProgression.Game.IRoomObserver>() : @observer} );
+            }
+            
+            System.Threading.Tasks.Task PlayerProgression.Game.IGameRoom.Unsubscribe(PlayerProgression.Game.IRoomObserver @observer)
+            {
+global::Orleans.CodeGeneration.GrainFactoryBase.CheckGrainObserverParamInternal(@observer);
+
+                return base.InvokeMethodAsync<object>(-1937911738, new object[] {@observer is global::Orleans.Grain ? @observer.AsReference<PlayerProgression.Game.IRoomObserver>() : @observer} );
+            }
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    [global::Orleans.CodeGeneration.MethodInvokerAttribute("PlayerProgression.Game.IGameRoom", -1756075968)]
+    internal class GameRoomMethodInvoker : global::Orleans.CodeGeneration.IGrainMethodInvoker
+    {
+        
+        int global::Orleans.CodeGeneration.IGrainMethodInvoker.InterfaceId
+        {
+            get
+            {
+                return -1756075968;
+            }
+        }
+        
+        global::System.Threading.Tasks.Task<object> global::Orleans.CodeGeneration.IGrainMethodInvoker.Invoke(global::Orleans.Runtime.IAddressable grain, int interfaceId, int methodId, object[] arguments)
+        {
+
+            try
+            {                    if (grain == null) throw new System.ArgumentNullException("grain");
+                switch (interfaceId)
+                {
+                    case -1756075968:  // IGameRoom
+                        switch (methodId)
+                        {
+                            case -1839323170: 
+                                return ((IGameRoom)grain).AddPlayer((Int64)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
+                            case 797923165: 
+                                return ((IGameRoom)grain).StartGame().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
+                            case -268291772: 
+                                return ((IGameRoom)grain).Subscribe((IRoomObserver)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
+                            case -1937911738: 
+                                return ((IGameRoom)grain).Unsubscribe((IRoomObserver)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
+                            default: 
+                            throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
+                        }
+                    default:
+                        throw new System.InvalidCastException("interfaceId="+interfaceId);
+                }
+            }
+            catch(Exception ex)
+            {
+                var t = new System.Threading.Tasks.TaskCompletionSource<object>();
+                t.SetException(ex);
+                return t.Task;
+            }
+        }
+        
+        public static string GetMethodName(int interfaceId, int methodId)
+        {
+
+            switch (interfaceId)
+            {
+                
+                case -1756075968:  // IGameRoom
+                    switch (methodId)
+                    {
+                        case -1839323170:
+                            return "AddPlayer";
+                    case 797923165:
+                            return "StartGame";
+                    case -268291772:
+                            return "Subscribe";
+                    case -1937911738:
+                            return "Unsubscribe";
+                    
+                        default: 
+                            throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
+                    }
+
+                default:
+                    throw new System.InvalidCastException("interfaceId="+interfaceId);
+            }
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    public class RoomObserverFactory
+    {
+        
+
+            public static IRoomObserver Cast(global::Orleans.Runtime.IAddressable grainRef)
+            {
+                
+                return RoomObserverReference.Cast(grainRef);
+            }
+
+        private static global::Orleans.CodeGeneration.IGrainMethodInvoker methodInvoker;
+
+        public async static System.Threading.Tasks.Task<IRoomObserver> CreateObjectReference(IRoomObserver obj)
+        {
+            if (methodInvoker == null) methodInvoker = new RoomObserverMethodInvoker();
+            return RoomObserverFactory.Cast(await global::Orleans.Runtime.GrainReference.CreateObjectReference(obj, methodInvoker));
+        }
+
+        public static System.Threading.Tasks.Task DeleteObjectReference(IRoomObserver reference)
+        {
+            return global::Orleans.Runtime.GrainReference.DeleteObjectReference(reference);
+        }
+        
+        [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
+        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+        [System.SerializableAttribute()]
+        [global::Orleans.CodeGeneration.GrainReferenceAttribute("PlayerProgression.Game.IRoomObserver")]
+        internal class RoomObserverReference : global::Orleans.Runtime.GrainReference, global::Orleans.Runtime.IAddressable, PlayerProgression.Game.IRoomObserver
+        {
+            
+
+            public static IRoomObserver Cast(global::Orleans.Runtime.IAddressable grainRef)
+            {
+                
+                return (IRoomObserver) global::Orleans.Runtime.GrainReference.CastInternal(typeof(IRoomObserver), (global::Orleans.Runtime.GrainReference gr) => { return new RoomObserverReference(gr);}, grainRef, -476724802);
+            }
+            
+            protected internal RoomObserverReference(global::Orleans.Runtime.GrainReference reference) : 
+                    base(reference)
+            {
+            }
+            
+            protected internal RoomObserverReference(SerializationInfo info, StreamingContext context) : 
+                    base(info, context)
+            {
+            }
+            
+            protected override int InterfaceId
+            {
+                get
+                {
+                    return -476724802;
+                }
+            }
+            
+            public override string InterfaceName
+            {
+                get
+                {
+                    return "PlayerProgression.Game.IRoomObserver";
+                }
+            }
+            
+            [global::Orleans.CodeGeneration.CopierMethodAttribute()]
+            public static object _Copier(object original)
+            {
+                RoomObserverReference input = ((RoomObserverReference)(original));
+                return ((RoomObserverReference)(global::Orleans.Runtime.GrainReference.CopyGrainReference(input)));
+            }
+            
+            [global::Orleans.CodeGeneration.SerializerMethodAttribute()]
+            public static void _Serializer(object original, global::Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
+            {
+                RoomObserverReference input = ((RoomObserverReference)(original));
+                global::Orleans.Runtime.GrainReference.SerializeGrainReference(input, stream, expected);
+            }
+            
+            [global::Orleans.CodeGeneration.DeserializerMethodAttribute()]
+            public static object _Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
+            {
+                return RoomObserverReference.Cast(((global::Orleans.Runtime.GrainReference)(global::Orleans.Runtime.GrainReference.DeserializeGrainReference(expected, stream))));
+            }
+            
+            public override bool IsCompatible(int interfaceId)
+            {
+                return (interfaceId == this.InterfaceId);
+            }
+            
+            protected override string GetMethodName(int interfaceId, int methodId)
+            {
+                return RoomObserverMethodInvoker.GetMethodName(interfaceId, methodId);
+            }
+            
+            void PlayerProgression.Game.IRoomObserver.GameStart(System.Guid @gameId, int @seconds)
+            {
+
+                    base.InvokeOneWayMethod(-922523574, new object[] {@gameId, @seconds} );
+            }
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    [global::Orleans.CodeGeneration.MethodInvokerAttribute("PlayerProgression.Game.IRoomObserver", -476724802)]
+    internal class RoomObserverMethodInvoker : global::Orleans.CodeGeneration.IGrainMethodInvoker
+    {
+        
+        int global::Orleans.CodeGeneration.IGrainMethodInvoker.InterfaceId
+        {
+            get
+            {
+                return -476724802;
+            }
+        }
+        
+        global::System.Threading.Tasks.Task<object> global::Orleans.CodeGeneration.IGrainMethodInvoker.Invoke(global::Orleans.Runtime.IAddressable grain, int interfaceId, int methodId, object[] arguments)
+        {
+
+            try
+            {                    if (grain == null) throw new System.ArgumentNullException("grain");
+                switch (interfaceId)
+                {
+                    case -476724802:  // IRoomObserver
+                        switch (methodId)
+                        {
+                            case -922523574: 
+                                ((IRoomObserver)grain).GameStart((Guid)arguments[0], (Int32)arguments[1]); return System.Threading.Tasks.Task.FromResult((object)true);
+                            default: 
+                            throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
+                        }
+                    default:
+                        throw new System.InvalidCastException("interfaceId="+interfaceId);
+                }
+            }
+            catch(Exception ex)
+            {
+                var t = new System.Threading.Tasks.TaskCompletionSource<object>();
+                t.SetException(ex);
+                return t.Task;
+            }
+        }
+        
+        public static string GetMethodName(int interfaceId, int methodId)
+        {
+
+            switch (interfaceId)
+            {
+                
+                case -476724802:  // IRoomObserver
+                    switch (methodId)
+                    {
+                        case -922523574:
+                            return "GameStart";
+                    
+                        default: 
+                            throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
+                    }
+
+                default:
+                    throw new System.InvalidCastException("interfaceId="+interfaceId);
+            }
+        }
+    }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
@@ -59,15 +419,15 @@ namespace PlayerProgression
         [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
         [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
         [System.SerializableAttribute()]
-        [global::Orleans.CodeGeneration.GrainReferenceAttribute("PlayerProgression.IMatchMaker")]
-        internal class MatchMakerReference : global::Orleans.Runtime.GrainReference, global::Orleans.Runtime.IAddressable, PlayerProgression.IMatchMaker
+        [global::Orleans.CodeGeneration.GrainReferenceAttribute("PlayerProgression.Game.IMatchMaker")]
+        internal class MatchMakerReference : global::Orleans.Runtime.GrainReference, global::Orleans.Runtime.IAddressable, PlayerProgression.Game.IMatchMaker
         {
             
 
             public static IMatchMaker Cast(global::Orleans.Runtime.IAddressable grainRef)
             {
                 
-                return (IMatchMaker) global::Orleans.Runtime.GrainReference.CastInternal(typeof(IMatchMaker), (global::Orleans.Runtime.GrainReference gr) => { return new MatchMakerReference(gr);}, grainRef, -25880655);
+                return (IMatchMaker) global::Orleans.Runtime.GrainReference.CastInternal(typeof(IMatchMaker), (global::Orleans.Runtime.GrainReference gr) => { return new MatchMakerReference(gr);}, grainRef, 2117001699);
             }
             
             protected internal MatchMakerReference(global::Orleans.Runtime.GrainReference reference) : 
@@ -84,7 +444,7 @@ namespace PlayerProgression
             {
                 get
                 {
-                    return -25880655;
+                    return 2117001699;
                 }
             }
             
@@ -92,7 +452,7 @@ namespace PlayerProgression
             {
                 get
                 {
-                    return "PlayerProgression.IMatchMaker";
+                    return "PlayerProgression.Game.IMatchMaker";
                 }
             }
             
@@ -126,7 +486,7 @@ namespace PlayerProgression
                 return MatchMakerMethodInvoker.GetMethodName(interfaceId, methodId);
             }
             
-            System.Threading.Tasks.Task<System.Guid> PlayerProgression.IMatchMaker.QuickMatch(long @playerId)
+            System.Threading.Tasks.Task<System.Guid> PlayerProgression.Game.IMatchMaker.QuickMatch(long @playerId)
             {
 
                 return base.InvokeMethodAsync<System.Guid>(-1506575629, new object[] {@playerId} );
@@ -136,7 +496,7 @@ namespace PlayerProgression
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
-    [global::Orleans.CodeGeneration.MethodInvokerAttribute("PlayerProgression.IMatchMaker", -25880655)]
+    [global::Orleans.CodeGeneration.MethodInvokerAttribute("PlayerProgression.Game.IMatchMaker", 2117001699)]
     internal class MatchMakerMethodInvoker : global::Orleans.CodeGeneration.IGrainMethodInvoker
     {
         
@@ -144,7 +504,7 @@ namespace PlayerProgression
         {
             get
             {
-                return -25880655;
+                return 2117001699;
             }
         }
         
@@ -155,7 +515,7 @@ namespace PlayerProgression
             {                    if (grain == null) throw new System.ArgumentNullException("grain");
                 switch (interfaceId)
                 {
-                    case -25880655:  // IMatchMaker
+                    case 2117001699:  // IMatchMaker
                         switch (methodId)
                         {
                             case -1506575629: 
@@ -181,7 +541,7 @@ namespace PlayerProgression
             switch (interfaceId)
             {
                 
-                case -25880655:  // IMatchMaker
+                case 2117001699:  // IMatchMaker
                     switch (methodId)
                     {
                         case -1506575629:
@@ -196,6 +556,392 @@ namespace PlayerProgression
             }
         }
     }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    public class GameGrainFactory
+    {
+        
+
+                        [System.Obsolete("This method has been deprecated. Please use GrainFactory.GetGrain<IGameGrain> instead.")]
+                        public static IGameGrain GetGrain(System.Guid primaryKey)
+                        {
+                            return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(IGameGrain), primaryKey));
+                        }
+
+                        [System.Obsolete("This method has been deprecated. Please use GrainFactory.GetGrain<IGameGrain> instead.")]
+                        public static IGameGrain GetGrain(System.Guid primaryKey, string grainClassNamePrefix)
+                        {
+                            return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(IGameGrain), primaryKey, grainClassNamePrefix));
+                        }
+
+            public static IGameGrain Cast(global::Orleans.Runtime.IAddressable grainRef)
+            {
+                
+                return GameGrainReference.Cast(grainRef);
+            }
+        
+        [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
+        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+        [System.SerializableAttribute()]
+        [global::Orleans.CodeGeneration.GrainReferenceAttribute("PlayerProgression.Game.IGameGrain")]
+        internal class GameGrainReference : global::Orleans.Runtime.GrainReference, global::Orleans.Runtime.IAddressable, PlayerProgression.Game.IGameGrain
+        {
+            
+
+            public static IGameGrain Cast(global::Orleans.Runtime.IAddressable grainRef)
+            {
+                
+                return (IGameGrain) global::Orleans.Runtime.GrainReference.CastInternal(typeof(IGameGrain), (global::Orleans.Runtime.GrainReference gr) => { return new GameGrainReference(gr);}, grainRef, -42234815);
+            }
+            
+            protected internal GameGrainReference(global::Orleans.Runtime.GrainReference reference) : 
+                    base(reference)
+            {
+            }
+            
+            protected internal GameGrainReference(SerializationInfo info, StreamingContext context) : 
+                    base(info, context)
+            {
+            }
+            
+            protected override int InterfaceId
+            {
+                get
+                {
+                    return -42234815;
+                }
+            }
+            
+            public override string InterfaceName
+            {
+                get
+                {
+                    return "PlayerProgression.Game.IGameGrain";
+                }
+            }
+            
+            [global::Orleans.CodeGeneration.CopierMethodAttribute()]
+            public static object _Copier(object original)
+            {
+                GameGrainReference input = ((GameGrainReference)(original));
+                return ((GameGrainReference)(global::Orleans.Runtime.GrainReference.CopyGrainReference(input)));
+            }
+            
+            [global::Orleans.CodeGeneration.SerializerMethodAttribute()]
+            public static void _Serializer(object original, global::Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
+            {
+                GameGrainReference input = ((GameGrainReference)(original));
+                global::Orleans.Runtime.GrainReference.SerializeGrainReference(input, stream, expected);
+            }
+            
+            [global::Orleans.CodeGeneration.DeserializerMethodAttribute()]
+            public static object _Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
+            {
+                return GameGrainReference.Cast(((global::Orleans.Runtime.GrainReference)(global::Orleans.Runtime.GrainReference.DeserializeGrainReference(expected, stream))));
+            }
+            
+            public override bool IsCompatible(int interfaceId)
+            {
+                return (interfaceId == this.InterfaceId);
+            }
+            
+            protected override string GetMethodName(int interfaceId, int methodId)
+            {
+                return GameGrainMethodInvoker.GetMethodName(interfaceId, methodId);
+            }
+            
+            System.Threading.Tasks.Task PlayerProgression.Game.IGameGrain.UpdateGameStatistics(PlayerProgression.GameStatus @status)
+            {
+
+                return base.InvokeMethodAsync<object>(896056570, new object[] {@status} );
+            }
+            
+            System.Threading.Tasks.Task PlayerProgression.Game.IGameGrain.GameStarts(System.Collections.Generic.List<Int64> @players)
+            {
+
+                return base.InvokeMethodAsync<object>(-823258890, new object[] {@players} );
+            }
+            
+            System.Threading.Tasks.Task PlayerProgression.Game.IGameGrain.GameEnds()
+            {
+
+                return base.InvokeMethodAsync<object>(1804983602, null );
+            }
+            
+            System.Threading.Tasks.Task PlayerProgression.Game.IGameGrain.SubscribeStatus(PlayerProgression.Game.IGameObserver @subscriber)
+            {
+global::Orleans.CodeGeneration.GrainFactoryBase.CheckGrainObserverParamInternal(@subscriber);
+
+                return base.InvokeMethodAsync<object>(2079773961, new object[] {@subscriber is global::Orleans.Grain ? @subscriber.AsReference<PlayerProgression.Game.IGameObserver>() : @subscriber} );
+            }
+            
+            System.Threading.Tasks.Task PlayerProgression.Game.IGameGrain.UnsubscribeStatus(PlayerProgression.Game.IGameObserver @subscriber)
+            {
+global::Orleans.CodeGeneration.GrainFactoryBase.CheckGrainObserverParamInternal(@subscriber);
+
+                return base.InvokeMethodAsync<object>(-842179103, new object[] {@subscriber is global::Orleans.Grain ? @subscriber.AsReference<PlayerProgression.Game.IGameObserver>() : @subscriber} );
+            }
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    [global::Orleans.CodeGeneration.MethodInvokerAttribute("PlayerProgression.Game.IGameGrain", -42234815)]
+    internal class GameGrainMethodInvoker : global::Orleans.CodeGeneration.IGrainMethodInvoker
+    {
+        
+        int global::Orleans.CodeGeneration.IGrainMethodInvoker.InterfaceId
+        {
+            get
+            {
+                return -42234815;
+            }
+        }
+        
+        global::System.Threading.Tasks.Task<object> global::Orleans.CodeGeneration.IGrainMethodInvoker.Invoke(global::Orleans.Runtime.IAddressable grain, int interfaceId, int methodId, object[] arguments)
+        {
+
+            try
+            {                    if (grain == null) throw new System.ArgumentNullException("grain");
+                switch (interfaceId)
+                {
+                    case -42234815:  // IGameGrain
+                        switch (methodId)
+                        {
+                            case 896056570: 
+                                return ((IGameGrain)grain).UpdateGameStatistics((PlayerProgression.GameStatus)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
+                            case -823258890: 
+                                return ((IGameGrain)grain).GameStarts((System.Collections.Generic.List<Int64>)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
+                            case 1804983602: 
+                                return ((IGameGrain)grain).GameEnds().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
+                            case 2079773961: 
+                                return ((IGameGrain)grain).SubscribeStatus((IGameObserver)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
+                            case -842179103: 
+                                return ((IGameGrain)grain).UnsubscribeStatus((IGameObserver)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
+                            default: 
+                            throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
+                        }
+                    default:
+                        throw new System.InvalidCastException("interfaceId="+interfaceId);
+                }
+            }
+            catch(Exception ex)
+            {
+                var t = new System.Threading.Tasks.TaskCompletionSource<object>();
+                t.SetException(ex);
+                return t.Task;
+            }
+        }
+        
+        public static string GetMethodName(int interfaceId, int methodId)
+        {
+
+            switch (interfaceId)
+            {
+                
+                case -42234815:  // IGameGrain
+                    switch (methodId)
+                    {
+                        case 896056570:
+                            return "UpdateGameStatistics";
+                    case -823258890:
+                            return "GameStarts";
+                    case 1804983602:
+                            return "GameEnds";
+                    case 2079773961:
+                            return "SubscribeStatus";
+                    case -842179103:
+                            return "UnsubscribeStatus";
+                    
+                        default: 
+                            throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
+                    }
+
+                default:
+                    throw new System.InvalidCastException("interfaceId="+interfaceId);
+            }
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    public class GameObserverFactory
+    {
+        
+
+            public static IGameObserver Cast(global::Orleans.Runtime.IAddressable grainRef)
+            {
+                
+                return GameObserverReference.Cast(grainRef);
+            }
+
+        private static global::Orleans.CodeGeneration.IGrainMethodInvoker methodInvoker;
+
+        public async static System.Threading.Tasks.Task<IGameObserver> CreateObjectReference(IGameObserver obj)
+        {
+            if (methodInvoker == null) methodInvoker = new GameObserverMethodInvoker();
+            return GameObserverFactory.Cast(await global::Orleans.Runtime.GrainReference.CreateObjectReference(obj, methodInvoker));
+        }
+
+        public static System.Threading.Tasks.Task DeleteObjectReference(IGameObserver reference)
+        {
+            return global::Orleans.Runtime.GrainReference.DeleteObjectReference(reference);
+        }
+        
+        [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
+        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+        [System.SerializableAttribute()]
+        [global::Orleans.CodeGeneration.GrainReferenceAttribute("PlayerProgression.Game.IGameObserver")]
+        internal class GameObserverReference : global::Orleans.Runtime.GrainReference, global::Orleans.Runtime.IAddressable, PlayerProgression.Game.IGameObserver
+        {
+            
+
+            public static IGameObserver Cast(global::Orleans.Runtime.IAddressable grainRef)
+            {
+                
+                return (IGameObserver) global::Orleans.Runtime.GrainReference.CastInternal(typeof(IGameObserver), (global::Orleans.Runtime.GrainReference gr) => { return new GameObserverReference(gr);}, grainRef, 555341961);
+            }
+            
+            protected internal GameObserverReference(global::Orleans.Runtime.GrainReference reference) : 
+                    base(reference)
+            {
+            }
+            
+            protected internal GameObserverReference(SerializationInfo info, StreamingContext context) : 
+                    base(info, context)
+            {
+            }
+            
+            protected override int InterfaceId
+            {
+                get
+                {
+                    return 555341961;
+                }
+            }
+            
+            public override string InterfaceName
+            {
+                get
+                {
+                    return "PlayerProgression.Game.IGameObserver";
+                }
+            }
+            
+            [global::Orleans.CodeGeneration.CopierMethodAttribute()]
+            public static object _Copier(object original)
+            {
+                GameObserverReference input = ((GameObserverReference)(original));
+                return ((GameObserverReference)(global::Orleans.Runtime.GrainReference.CopyGrainReference(input)));
+            }
+            
+            [global::Orleans.CodeGeneration.SerializerMethodAttribute()]
+            public static void _Serializer(object original, global::Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
+            {
+                GameObserverReference input = ((GameObserverReference)(original));
+                global::Orleans.Runtime.GrainReference.SerializeGrainReference(input, stream, expected);
+            }
+            
+            [global::Orleans.CodeGeneration.DeserializerMethodAttribute()]
+            public static object _Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
+            {
+                return GameObserverReference.Cast(((global::Orleans.Runtime.GrainReference)(global::Orleans.Runtime.GrainReference.DeserializeGrainReference(expected, stream))));
+            }
+            
+            public override bool IsCompatible(int interfaceId)
+            {
+                return (interfaceId == this.InterfaceId);
+            }
+            
+            protected override string GetMethodName(int interfaceId, int methodId)
+            {
+                return GameObserverMethodInvoker.GetMethodName(interfaceId, methodId);
+            }
+            
+            void PlayerProgression.Game.IGameObserver.UpdateGameStatus(System.Guid @id, bool @available)
+            {
+
+                    base.InvokeOneWayMethod(132903498, new object[] {@id, @available} );
+            }
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    [global::Orleans.CodeGeneration.MethodInvokerAttribute("PlayerProgression.Game.IGameObserver", 555341961)]
+    internal class GameObserverMethodInvoker : global::Orleans.CodeGeneration.IGrainMethodInvoker
+    {
+        
+        int global::Orleans.CodeGeneration.IGrainMethodInvoker.InterfaceId
+        {
+            get
+            {
+                return 555341961;
+            }
+        }
+        
+        global::System.Threading.Tasks.Task<object> global::Orleans.CodeGeneration.IGrainMethodInvoker.Invoke(global::Orleans.Runtime.IAddressable grain, int interfaceId, int methodId, object[] arguments)
+        {
+
+            try
+            {                    if (grain == null) throw new System.ArgumentNullException("grain");
+                switch (interfaceId)
+                {
+                    case 555341961:  // IGameObserver
+                        switch (methodId)
+                        {
+                            case 132903498: 
+                                ((IGameObserver)grain).UpdateGameStatus((Guid)arguments[0], (Boolean)arguments[1]); return System.Threading.Tasks.Task.FromResult((object)true);
+                            default: 
+                            throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
+                        }
+                    default:
+                        throw new System.InvalidCastException("interfaceId="+interfaceId);
+                }
+            }
+            catch(Exception ex)
+            {
+                var t = new System.Threading.Tasks.TaskCompletionSource<object>();
+                t.SetException(ex);
+                return t.Task;
+            }
+        }
+        
+        public static string GetMethodName(int interfaceId, int methodId)
+        {
+
+            switch (interfaceId)
+            {
+                
+                case 555341961:  // IGameObserver
+                    switch (methodId)
+                    {
+                        case 132903498:
+                            return "UpdateGameStatus";
+                    
+                        default: 
+                            throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
+                    }
+
+                default:
+                    throw new System.InvalidCastException("interfaceId="+interfaceId);
+            }
+        }
+    }
+}
+namespace PlayerProgression.ProcessManagement
+{
+    using System;
+    using System.Net;
+    using System.Runtime.Serialization;
+    using System.Runtime.Serialization.Formatters.Binary;
+    using System.IO;
+    using System.Collections.Generic;
+    using Orleans;
+    using Orleans.Runtime;
+    using Orleans.Core;
+    
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
@@ -224,15 +970,15 @@ namespace PlayerProgression
         [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
         [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
         [System.SerializableAttribute()]
-        [global::Orleans.CodeGeneration.GrainReferenceAttribute("PlayerProgression.IProcessManager")]
-        internal class ProcessManagerReference : global::Orleans.Runtime.GrainReference, global::Orleans.Runtime.IAddressable, PlayerProgression.IProcessManager
+        [global::Orleans.CodeGeneration.GrainReferenceAttribute("PlayerProgression.ProcessManagement.IProcessManager")]
+        internal class ProcessManagerReference : global::Orleans.Runtime.GrainReference, global::Orleans.Runtime.IAddressable, PlayerProgression.ProcessManagement.IProcessManager
         {
             
 
             public static IProcessManager Cast(global::Orleans.Runtime.IAddressable grainRef)
             {
                 
-                return (IProcessManager) global::Orleans.Runtime.GrainReference.CastInternal(typeof(IProcessManager), (global::Orleans.Runtime.GrainReference gr) => { return new ProcessManagerReference(gr);}, grainRef, -497668699);
+                return (IProcessManager) global::Orleans.Runtime.GrainReference.CastInternal(typeof(IProcessManager), (global::Orleans.Runtime.GrainReference gr) => { return new ProcessManagerReference(gr);}, grainRef, 709694133);
             }
             
             protected internal ProcessManagerReference(global::Orleans.Runtime.GrainReference reference) : 
@@ -249,7 +995,7 @@ namespace PlayerProgression
             {
                 get
                 {
-                    return -497668699;
+                    return 709694133;
                 }
             }
             
@@ -257,7 +1003,7 @@ namespace PlayerProgression
             {
                 get
                 {
-                    return "PlayerProgression.IProcessManager";
+                    return "PlayerProgression.ProcessManagement.IProcessManager";
                 }
             }
             
@@ -291,51 +1037,51 @@ namespace PlayerProgression
                 return ProcessManagerMethodInvoker.GetMethodName(interfaceId, methodId);
             }
             
-            System.Threading.Tasks.Task<System.Guid> PlayerProgression.IProcessManager.CreateProcess()
+            System.Threading.Tasks.Task<System.Guid> PlayerProgression.ProcessManagement.IProcessManager.CreateProcess()
             {
 
                 return base.InvokeMethodAsync<System.Guid>(651444950, null );
             }
             
-            System.Threading.Tasks.Task PlayerProgression.IProcessManager.ProcessCreated(System.Guid @processId)
+            System.Threading.Tasks.Task PlayerProgression.ProcessManagement.IProcessManager.ProcessCreated(System.Guid @processId)
             {
 
                 return base.InvokeMethodAsync<object>(-1044420421, new object[] {@processId} );
             }
             
-            System.Threading.Tasks.Task PlayerProgression.IProcessManager.ProcessExited(System.Guid @processId)
+            System.Threading.Tasks.Task PlayerProgression.ProcessManagement.IProcessManager.ProcessExited(System.Guid @processId)
             {
 
                 return base.InvokeMethodAsync<object>(274862336, new object[] {@processId} );
             }
             
-            System.Threading.Tasks.Task PlayerProgression.IProcessManager.AddPlayer(System.Guid @gameId, long @playerId)
+            System.Threading.Tasks.Task PlayerProgression.ProcessManagement.IProcessManager.AddPlayer(System.Guid @gameId, long @playerId)
             {
 
                 return base.InvokeMethodAsync<object>(1165721144, new object[] {@gameId, @playerId} );
             }
             
-            System.Threading.Tasks.Task PlayerProgression.IProcessManager.StartGame(System.Guid @gameId)
+            System.Threading.Tasks.Task PlayerProgression.ProcessManagement.IProcessManager.StartGame(System.Guid @gameId)
             {
 
                 return base.InvokeMethodAsync<object>(-561513888, new object[] {@gameId} );
             }
             
-            System.Threading.Tasks.Task PlayerProgression.IProcessManager.SubscribeNotification(PlayerProgression.IProcessMgrObserver @subscriber)
+            System.Threading.Tasks.Task PlayerProgression.ProcessManagement.IProcessManager.SubscribeNotification(PlayerProgression.ProcessManagement.IProcessMgrObserver @subscriber)
             {
 global::Orleans.CodeGeneration.GrainFactoryBase.CheckGrainObserverParamInternal(@subscriber);
 
-                return base.InvokeMethodAsync<object>(940742970, new object[] {@subscriber is global::Orleans.Grain ? @subscriber.AsReference<PlayerProgression.IProcessMgrObserver>() : @subscriber} );
+                return base.InvokeMethodAsync<object>(940742970, new object[] {@subscriber is global::Orleans.Grain ? @subscriber.AsReference<PlayerProgression.ProcessManagement.IProcessMgrObserver>() : @subscriber} );
             }
             
-            System.Threading.Tasks.Task PlayerProgression.IProcessManager.UnsubscribeNotification(PlayerProgression.IProcessMgrObserver @subscriber)
+            System.Threading.Tasks.Task PlayerProgression.ProcessManagement.IProcessManager.UnsubscribeNotification(PlayerProgression.ProcessManagement.IProcessMgrObserver @subscriber)
             {
 global::Orleans.CodeGeneration.GrainFactoryBase.CheckGrainObserverParamInternal(@subscriber);
 
-                return base.InvokeMethodAsync<object>(1789767630, new object[] {@subscriber is global::Orleans.Grain ? @subscriber.AsReference<PlayerProgression.IProcessMgrObserver>() : @subscriber} );
+                return base.InvokeMethodAsync<object>(1789767630, new object[] {@subscriber is global::Orleans.Grain ? @subscriber.AsReference<PlayerProgression.ProcessManagement.IProcessMgrObserver>() : @subscriber} );
             }
             
-            System.Threading.Tasks.Task<System.Guid> PlayerProgression.IProcessManager.FindAvailableSession()
+            System.Threading.Tasks.Task<System.Guid> PlayerProgression.ProcessManagement.IProcessManager.FindAvailableSession()
             {
 
                 return base.InvokeMethodAsync<System.Guid>(526784679, null );
@@ -345,7 +1091,7 @@ global::Orleans.CodeGeneration.GrainFactoryBase.CheckGrainObserverParamInternal(
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
-    [global::Orleans.CodeGeneration.MethodInvokerAttribute("PlayerProgression.IProcessManager", -497668699)]
+    [global::Orleans.CodeGeneration.MethodInvokerAttribute("PlayerProgression.ProcessManagement.IProcessManager", 709694133)]
     internal class ProcessManagerMethodInvoker : global::Orleans.CodeGeneration.IGrainMethodInvoker
     {
         
@@ -353,7 +1099,7 @@ global::Orleans.CodeGeneration.GrainFactoryBase.CheckGrainObserverParamInternal(
         {
             get
             {
-                return -497668699;
+                return 709694133;
             }
         }
         
@@ -364,7 +1110,7 @@ global::Orleans.CodeGeneration.GrainFactoryBase.CheckGrainObserverParamInternal(
             {                    if (grain == null) throw new System.ArgumentNullException("grain");
                 switch (interfaceId)
                 {
-                    case -497668699:  // IProcessManager
+                    case 709694133:  // IProcessManager
                         switch (methodId)
                         {
                             case 651444950: 
@@ -404,7 +1150,7 @@ global::Orleans.CodeGeneration.GrainFactoryBase.CheckGrainObserverParamInternal(
             switch (interfaceId)
             {
                 
-                case -497668699:  // IProcessManager
+                case 709694133:  // IProcessManager
                     switch (methodId)
                     {
                         case 651444950:
@@ -462,15 +1208,15 @@ global::Orleans.CodeGeneration.GrainFactoryBase.CheckGrainObserverParamInternal(
         [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
         [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
         [System.SerializableAttribute()]
-        [global::Orleans.CodeGeneration.GrainReferenceAttribute("PlayerProgression.IProcessMgrObserver")]
-        internal class ProcessMgrObserverReference : global::Orleans.Runtime.GrainReference, global::Orleans.Runtime.IAddressable, PlayerProgression.IProcessMgrObserver
+        [global::Orleans.CodeGeneration.GrainReferenceAttribute("PlayerProgression.ProcessManagement.IProcessMgrObserver")]
+        internal class ProcessMgrObserverReference : global::Orleans.Runtime.GrainReference, global::Orleans.Runtime.IAddressable, PlayerProgression.ProcessManagement.IProcessMgrObserver
         {
             
 
             public static IProcessMgrObserver Cast(global::Orleans.Runtime.IAddressable grainRef)
             {
                 
-                return (IProcessMgrObserver) global::Orleans.Runtime.GrainReference.CastInternal(typeof(IProcessMgrObserver), (global::Orleans.Runtime.GrainReference gr) => { return new ProcessMgrObserverReference(gr);}, grainRef, -264133649);
+                return (IProcessMgrObserver) global::Orleans.Runtime.GrainReference.CastInternal(typeof(IProcessMgrObserver), (global::Orleans.Runtime.GrainReference gr) => { return new ProcessMgrObserverReference(gr);}, grainRef, 443569489);
             }
             
             protected internal ProcessMgrObserverReference(global::Orleans.Runtime.GrainReference reference) : 
@@ -487,7 +1233,7 @@ global::Orleans.CodeGeneration.GrainFactoryBase.CheckGrainObserverParamInternal(
             {
                 get
                 {
-                    return -264133649;
+                    return 443569489;
                 }
             }
             
@@ -495,7 +1241,7 @@ global::Orleans.CodeGeneration.GrainFactoryBase.CheckGrainObserverParamInternal(
             {
                 get
                 {
-                    return "PlayerProgression.IProcessMgrObserver";
+                    return "PlayerProgression.ProcessManagement.IProcessMgrObserver";
                 }
             }
             
@@ -529,19 +1275,19 @@ global::Orleans.CodeGeneration.GrainFactoryBase.CheckGrainObserverParamInternal(
                 return ProcessMgrObserverMethodInvoker.GetMethodName(interfaceId, methodId);
             }
             
-            void PlayerProgression.IProcessMgrObserver.CreateProcess()
+            void PlayerProgression.ProcessManagement.IProcessMgrObserver.CreateProcess()
             {
 
                     base.InvokeOneWayMethod(651444950, null );
             }
             
-            void PlayerProgression.IProcessMgrObserver.AddPlayer(System.Guid @gameId, long @playerId)
+            void PlayerProgression.ProcessManagement.IProcessMgrObserver.AddPlayer(System.Guid @gameId, long @playerId)
             {
 
                     base.InvokeOneWayMethod(1165721144, new object[] {@gameId, @playerId} );
             }
             
-            void PlayerProgression.IProcessMgrObserver.StartGame(System.Guid @gameId)
+            void PlayerProgression.ProcessManagement.IProcessMgrObserver.StartGame(System.Guid @gameId)
             {
 
                     base.InvokeOneWayMethod(-561513888, new object[] {@gameId} );
@@ -551,7 +1297,7 @@ global::Orleans.CodeGeneration.GrainFactoryBase.CheckGrainObserverParamInternal(
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
-    [global::Orleans.CodeGeneration.MethodInvokerAttribute("PlayerProgression.IProcessMgrObserver", -264133649)]
+    [global::Orleans.CodeGeneration.MethodInvokerAttribute("PlayerProgression.ProcessManagement.IProcessMgrObserver", 443569489)]
     internal class ProcessMgrObserverMethodInvoker : global::Orleans.CodeGeneration.IGrainMethodInvoker
     {
         
@@ -559,7 +1305,7 @@ global::Orleans.CodeGeneration.GrainFactoryBase.CheckGrainObserverParamInternal(
         {
             get
             {
-                return -264133649;
+                return 443569489;
             }
         }
         
@@ -570,7 +1316,7 @@ global::Orleans.CodeGeneration.GrainFactoryBase.CheckGrainObserverParamInternal(
             {                    if (grain == null) throw new System.ArgumentNullException("grain");
                 switch (interfaceId)
                 {
-                    case -264133649:  // IProcessMgrObserver
+                    case 443569489:  // IProcessMgrObserver
                         switch (methodId)
                         {
                             case 651444950: 
@@ -600,7 +1346,7 @@ global::Orleans.CodeGeneration.GrainFactoryBase.CheckGrainObserverParamInternal(
             switch (interfaceId)
             {
                 
-                case -264133649:  // IProcessMgrObserver
+                case 443569489:  // IProcessMgrObserver
                     switch (methodId)
                     {
                         case 651444950:
@@ -619,379 +1365,19 @@ global::Orleans.CodeGeneration.GrainFactoryBase.CheckGrainObserverParamInternal(
             }
         }
     }
+}
+namespace PlayerProgression.Player
+{
+    using System;
+    using System.Net;
+    using System.Runtime.Serialization;
+    using System.Runtime.Serialization.Formatters.Binary;
+    using System.IO;
+    using System.Collections.Generic;
+    using Orleans;
+    using Orleans.Runtime;
+    using Orleans.Core;
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
-    public class GameGrainFactory
-    {
-        
-
-                        [System.Obsolete("This method has been deprecated. Please use GrainFactory.GetGrain<IGameGrain> instead.")]
-                        public static IGameGrain GetGrain(System.Guid primaryKey)
-                        {
-                            return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(IGameGrain), primaryKey));
-                        }
-
-                        [System.Obsolete("This method has been deprecated. Please use GrainFactory.GetGrain<IGameGrain> instead.")]
-                        public static IGameGrain GetGrain(System.Guid primaryKey, string grainClassNamePrefix)
-                        {
-                            return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(IGameGrain), primaryKey, grainClassNamePrefix));
-                        }
-
-            public static IGameGrain Cast(global::Orleans.Runtime.IAddressable grainRef)
-            {
-                
-                return GameGrainReference.Cast(grainRef);
-            }
-        
-        [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
-        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
-        [System.SerializableAttribute()]
-        [global::Orleans.CodeGeneration.GrainReferenceAttribute("PlayerProgression.IGameGrain")]
-        internal class GameGrainReference : global::Orleans.Runtime.GrainReference, global::Orleans.Runtime.IAddressable, PlayerProgression.IGameGrain
-        {
-            
-
-            public static IGameGrain Cast(global::Orleans.Runtime.IAddressable grainRef)
-            {
-                
-                return (IGameGrain) global::Orleans.Runtime.GrainReference.CastInternal(typeof(IGameGrain), (global::Orleans.Runtime.GrainReference gr) => { return new GameGrainReference(gr);}, grainRef, 1810599246);
-            }
-            
-            protected internal GameGrainReference(global::Orleans.Runtime.GrainReference reference) : 
-                    base(reference)
-            {
-            }
-            
-            protected internal GameGrainReference(SerializationInfo info, StreamingContext context) : 
-                    base(info, context)
-            {
-            }
-            
-            protected override int InterfaceId
-            {
-                get
-                {
-                    return 1810599246;
-                }
-            }
-            
-            public override string InterfaceName
-            {
-                get
-                {
-                    return "PlayerProgression.IGameGrain";
-                }
-            }
-            
-            [global::Orleans.CodeGeneration.CopierMethodAttribute()]
-            public static object _Copier(object original)
-            {
-                GameGrainReference input = ((GameGrainReference)(original));
-                return ((GameGrainReference)(global::Orleans.Runtime.GrainReference.CopyGrainReference(input)));
-            }
-            
-            [global::Orleans.CodeGeneration.SerializerMethodAttribute()]
-            public static void _Serializer(object original, global::Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
-            {
-                GameGrainReference input = ((GameGrainReference)(original));
-                global::Orleans.Runtime.GrainReference.SerializeGrainReference(input, stream, expected);
-            }
-            
-            [global::Orleans.CodeGeneration.DeserializerMethodAttribute()]
-            public static object _Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
-            {
-                return GameGrainReference.Cast(((global::Orleans.Runtime.GrainReference)(global::Orleans.Runtime.GrainReference.DeserializeGrainReference(expected, stream))));
-            }
-            
-            public override bool IsCompatible(int interfaceId)
-            {
-                return (interfaceId == this.InterfaceId);
-            }
-            
-            protected override string GetMethodName(int interfaceId, int methodId)
-            {
-                return GameGrainMethodInvoker.GetMethodName(interfaceId, methodId);
-            }
-            
-            System.Threading.Tasks.Task PlayerProgression.IGameGrain.UpdateGameStatistics(PlayerProgression.GameStatus @status)
-            {
-
-                return base.InvokeMethodAsync<object>(896056570, new object[] {@status} );
-            }
-            
-            System.Threading.Tasks.Task PlayerProgression.IGameGrain.GameStarts(System.Collections.Generic.List<Int64> @players)
-            {
-
-                return base.InvokeMethodAsync<object>(-823258890, new object[] {@players} );
-            }
-            
-            System.Threading.Tasks.Task PlayerProgression.IGameGrain.GameEnds()
-            {
-
-                return base.InvokeMethodAsync<object>(1804983602, null );
-            }
-            
-            System.Threading.Tasks.Task PlayerProgression.IGameGrain.SubscribeSessionStatus(PlayerProgression.IGameObserver @subscriber)
-            {
-global::Orleans.CodeGeneration.GrainFactoryBase.CheckGrainObserverParamInternal(@subscriber);
-
-                return base.InvokeMethodAsync<object>(492911566, new object[] {@subscriber is global::Orleans.Grain ? @subscriber.AsReference<PlayerProgression.IGameObserver>() : @subscriber} );
-            }
-            
-            System.Threading.Tasks.Task PlayerProgression.IGameGrain.UnsubscribeSessionStatus(PlayerProgression.IGameObserver @subscriber)
-            {
-global::Orleans.CodeGeneration.GrainFactoryBase.CheckGrainObserverParamInternal(@subscriber);
-
-                return base.InvokeMethodAsync<object>(1869986197, new object[] {@subscriber is global::Orleans.Grain ? @subscriber.AsReference<PlayerProgression.IGameObserver>() : @subscriber} );
-            }
-        }
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
-    [global::Orleans.CodeGeneration.MethodInvokerAttribute("PlayerProgression.IGameGrain", 1810599246)]
-    internal class GameGrainMethodInvoker : global::Orleans.CodeGeneration.IGrainMethodInvoker
-    {
-        
-        int global::Orleans.CodeGeneration.IGrainMethodInvoker.InterfaceId
-        {
-            get
-            {
-                return 1810599246;
-            }
-        }
-        
-        global::System.Threading.Tasks.Task<object> global::Orleans.CodeGeneration.IGrainMethodInvoker.Invoke(global::Orleans.Runtime.IAddressable grain, int interfaceId, int methodId, object[] arguments)
-        {
-
-            try
-            {                    if (grain == null) throw new System.ArgumentNullException("grain");
-                switch (interfaceId)
-                {
-                    case 1810599246:  // IGameGrain
-                        switch (methodId)
-                        {
-                            case 896056570: 
-                                return ((IGameGrain)grain).UpdateGameStatistics((GameStatus)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
-                            case -823258890: 
-                                return ((IGameGrain)grain).GameStarts((System.Collections.Generic.List<Int64>)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
-                            case 1804983602: 
-                                return ((IGameGrain)grain).GameEnds().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
-                            case 492911566: 
-                                return ((IGameGrain)grain).SubscribeSessionStatus((IGameObserver)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
-                            case 1869986197: 
-                                return ((IGameGrain)grain).UnsubscribeSessionStatus((IGameObserver)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
-                            default: 
-                            throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
-                        }
-                    default:
-                        throw new System.InvalidCastException("interfaceId="+interfaceId);
-                }
-            }
-            catch(Exception ex)
-            {
-                var t = new System.Threading.Tasks.TaskCompletionSource<object>();
-                t.SetException(ex);
-                return t.Task;
-            }
-        }
-        
-        public static string GetMethodName(int interfaceId, int methodId)
-        {
-
-            switch (interfaceId)
-            {
-                
-                case 1810599246:  // IGameGrain
-                    switch (methodId)
-                    {
-                        case 896056570:
-                            return "UpdateGameStatistics";
-                    case -823258890:
-                            return "GameStarts";
-                    case 1804983602:
-                            return "GameEnds";
-                    case 492911566:
-                            return "SubscribeSessionStatus";
-                    case 1869986197:
-                            return "UnsubscribeSessionStatus";
-                    
-                        default: 
-                            throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
-                    }
-
-                default:
-                    throw new System.InvalidCastException("interfaceId="+interfaceId);
-            }
-        }
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
-    public class GameObserverFactory
-    {
-        
-
-            public static IGameObserver Cast(global::Orleans.Runtime.IAddressable grainRef)
-            {
-                
-                return GameObserverReference.Cast(grainRef);
-            }
-
-        private static global::Orleans.CodeGeneration.IGrainMethodInvoker methodInvoker;
-
-        public async static System.Threading.Tasks.Task<IGameObserver> CreateObjectReference(IGameObserver obj)
-        {
-            if (methodInvoker == null) methodInvoker = new GameObserverMethodInvoker();
-            return GameObserverFactory.Cast(await global::Orleans.Runtime.GrainReference.CreateObjectReference(obj, methodInvoker));
-        }
-
-        public static System.Threading.Tasks.Task DeleteObjectReference(IGameObserver reference)
-        {
-            return global::Orleans.Runtime.GrainReference.DeleteObjectReference(reference);
-        }
-        
-        [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
-        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
-        [System.SerializableAttribute()]
-        [global::Orleans.CodeGeneration.GrainReferenceAttribute("PlayerProgression.IGameObserver")]
-        internal class GameObserverReference : global::Orleans.Runtime.GrainReference, global::Orleans.Runtime.IAddressable, PlayerProgression.IGameObserver
-        {
-            
-
-            public static IGameObserver Cast(global::Orleans.Runtime.IAddressable grainRef)
-            {
-                
-                return (IGameObserver) global::Orleans.Runtime.GrainReference.CastInternal(typeof(IGameObserver), (global::Orleans.Runtime.GrainReference gr) => { return new GameObserverReference(gr);}, grainRef, 1092779695);
-            }
-            
-            protected internal GameObserverReference(global::Orleans.Runtime.GrainReference reference) : 
-                    base(reference)
-            {
-            }
-            
-            protected internal GameObserverReference(SerializationInfo info, StreamingContext context) : 
-                    base(info, context)
-            {
-            }
-            
-            protected override int InterfaceId
-            {
-                get
-                {
-                    return 1092779695;
-                }
-            }
-            
-            public override string InterfaceName
-            {
-                get
-                {
-                    return "PlayerProgression.IGameObserver";
-                }
-            }
-            
-            [global::Orleans.CodeGeneration.CopierMethodAttribute()]
-            public static object _Copier(object original)
-            {
-                GameObserverReference input = ((GameObserverReference)(original));
-                return ((GameObserverReference)(global::Orleans.Runtime.GrainReference.CopyGrainReference(input)));
-            }
-            
-            [global::Orleans.CodeGeneration.SerializerMethodAttribute()]
-            public static void _Serializer(object original, global::Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
-            {
-                GameObserverReference input = ((GameObserverReference)(original));
-                global::Orleans.Runtime.GrainReference.SerializeGrainReference(input, stream, expected);
-            }
-            
-            [global::Orleans.CodeGeneration.DeserializerMethodAttribute()]
-            public static object _Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
-            {
-                return GameObserverReference.Cast(((global::Orleans.Runtime.GrainReference)(global::Orleans.Runtime.GrainReference.DeserializeGrainReference(expected, stream))));
-            }
-            
-            public override bool IsCompatible(int interfaceId)
-            {
-                return (interfaceId == this.InterfaceId);
-            }
-            
-            protected override string GetMethodName(int interfaceId, int methodId)
-            {
-                return GameObserverMethodInvoker.GetMethodName(interfaceId, methodId);
-            }
-            
-            void PlayerProgression.IGameObserver.UpdateSessionStatus(System.Guid @id, bool @available)
-            {
-
-                    base.InvokeOneWayMethod(210109482, new object[] {@id, @available} );
-            }
-        }
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
-    [global::Orleans.CodeGeneration.MethodInvokerAttribute("PlayerProgression.IGameObserver", 1092779695)]
-    internal class GameObserverMethodInvoker : global::Orleans.CodeGeneration.IGrainMethodInvoker
-    {
-        
-        int global::Orleans.CodeGeneration.IGrainMethodInvoker.InterfaceId
-        {
-            get
-            {
-                return 1092779695;
-            }
-        }
-        
-        global::System.Threading.Tasks.Task<object> global::Orleans.CodeGeneration.IGrainMethodInvoker.Invoke(global::Orleans.Runtime.IAddressable grain, int interfaceId, int methodId, object[] arguments)
-        {
-
-            try
-            {                    if (grain == null) throw new System.ArgumentNullException("grain");
-                switch (interfaceId)
-                {
-                    case 1092779695:  // IGameObserver
-                        switch (methodId)
-                        {
-                            case 210109482: 
-                                ((IGameObserver)grain).UpdateSessionStatus((Guid)arguments[0], (Boolean)arguments[1]); return System.Threading.Tasks.Task.FromResult((object)true);
-                            default: 
-                            throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
-                        }
-                    default:
-                        throw new System.InvalidCastException("interfaceId="+interfaceId);
-                }
-            }
-            catch(Exception ex)
-            {
-                var t = new System.Threading.Tasks.TaskCompletionSource<object>();
-                t.SetException(ex);
-                return t.Task;
-            }
-        }
-        
-        public static string GetMethodName(int interfaceId, int methodId)
-        {
-
-            switch (interfaceId)
-            {
-                
-                case 1092779695:  // IGameObserver
-                    switch (methodId)
-                    {
-                        case 210109482:
-                            return "UpdateSessionStatus";
-                    
-                        default: 
-                            throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
-                    }
-
-                default:
-                    throw new System.InvalidCastException("interfaceId="+interfaceId);
-            }
-        }
-    }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
@@ -1020,15 +1406,15 @@ global::Orleans.CodeGeneration.GrainFactoryBase.CheckGrainObserverParamInternal(
         [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
         [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
         [System.SerializableAttribute()]
-        [global::Orleans.CodeGeneration.GrainReferenceAttribute("PlayerProgression.IPlayerGrain")]
-        internal class PlayerGrainReference : global::Orleans.Runtime.GrainReference, global::Orleans.Runtime.IAddressable, PlayerProgression.IPlayerGrain
+        [global::Orleans.CodeGeneration.GrainReferenceAttribute("PlayerProgression.Player.IPlayerGrain")]
+        internal class PlayerGrainReference : global::Orleans.Runtime.GrainReference, global::Orleans.Runtime.IAddressable, PlayerProgression.Player.IPlayerGrain
         {
             
 
             public static IPlayerGrain Cast(global::Orleans.Runtime.IAddressable grainRef)
             {
                 
-                return (IPlayerGrain) global::Orleans.Runtime.GrainReference.CastInternal(typeof(IPlayerGrain), (global::Orleans.Runtime.GrainReference gr) => { return new PlayerGrainReference(gr);}, grainRef, -1602320946);
+                return (IPlayerGrain) global::Orleans.Runtime.GrainReference.CastInternal(typeof(IPlayerGrain), (global::Orleans.Runtime.GrainReference gr) => { return new PlayerGrainReference(gr);}, grainRef, -191510093);
             }
             
             protected internal PlayerGrainReference(global::Orleans.Runtime.GrainReference reference) : 
@@ -1045,7 +1431,7 @@ global::Orleans.CodeGeneration.GrainFactoryBase.CheckGrainObserverParamInternal(
             {
                 get
                 {
-                    return -1602320946;
+                    return -191510093;
                 }
             }
             
@@ -1053,7 +1439,7 @@ global::Orleans.CodeGeneration.GrainFactoryBase.CheckGrainObserverParamInternal(
             {
                 get
                 {
-                    return "PlayerProgression.IPlayerGrain";
+                    return "PlayerProgression.Player.IPlayerGrain";
                 }
             }
             
@@ -1087,19 +1473,19 @@ global::Orleans.CodeGeneration.GrainFactoryBase.CheckGrainObserverParamInternal(
                 return PlayerGrainMethodInvoker.GetMethodName(interfaceId, methodId);
             }
             
-            System.Threading.Tasks.Task PlayerProgression.IPlayerGrain.JoinGame(PlayerProgression.IGameGrain @game)
+            System.Threading.Tasks.Task PlayerProgression.Player.IPlayerGrain.JoinGame(PlayerProgression.Game.IGameGrain @game)
             {
 
-                return base.InvokeMethodAsync<object>(1908871624, new object[] {@game is global::Orleans.Grain ? @game.AsReference<PlayerProgression.IGameGrain>() : @game} );
+                return base.InvokeMethodAsync<object>(1908871624, new object[] {@game is global::Orleans.Grain ? @game.AsReference<PlayerProgression.Game.IGameGrain>() : @game} );
             }
             
-            System.Threading.Tasks.Task PlayerProgression.IPlayerGrain.LeaveGame(PlayerProgression.IGameGrain @game)
+            System.Threading.Tasks.Task PlayerProgression.Player.IPlayerGrain.LeaveGame(PlayerProgression.Game.IGameGrain @game)
             {
 
-                return base.InvokeMethodAsync<object>(-1586169980, new object[] {@game is global::Orleans.Grain ? @game.AsReference<PlayerProgression.IGameGrain>() : @game} );
+                return base.InvokeMethodAsync<object>(-1586169980, new object[] {@game is global::Orleans.Grain ? @game.AsReference<PlayerProgression.Game.IGameGrain>() : @game} );
             }
             
-            System.Threading.Tasks.Task<System.Guid> PlayerProgression.IPlayerGrain.QuickMatch()
+            System.Threading.Tasks.Task<System.Guid> PlayerProgression.Player.IPlayerGrain.QuickMatch()
             {
 
                 return base.InvokeMethodAsync<System.Guid>(-553066157, null );
@@ -1109,7 +1495,7 @@ global::Orleans.CodeGeneration.GrainFactoryBase.CheckGrainObserverParamInternal(
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
-    [global::Orleans.CodeGeneration.MethodInvokerAttribute("PlayerProgression.IPlayerGrain", -1602320946)]
+    [global::Orleans.CodeGeneration.MethodInvokerAttribute("PlayerProgression.Player.IPlayerGrain", -191510093)]
     internal class PlayerGrainMethodInvoker : global::Orleans.CodeGeneration.IGrainMethodInvoker
     {
         
@@ -1117,7 +1503,7 @@ global::Orleans.CodeGeneration.GrainFactoryBase.CheckGrainObserverParamInternal(
         {
             get
             {
-                return -1602320946;
+                return -191510093;
             }
         }
         
@@ -1128,13 +1514,13 @@ global::Orleans.CodeGeneration.GrainFactoryBase.CheckGrainObserverParamInternal(
             {                    if (grain == null) throw new System.ArgumentNullException("grain");
                 switch (interfaceId)
                 {
-                    case -1602320946:  // IPlayerGrain
+                    case -191510093:  // IPlayerGrain
                         switch (methodId)
                         {
                             case 1908871624: 
-                                return ((IPlayerGrain)grain).JoinGame((IGameGrain)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
+                                return ((IPlayerGrain)grain).JoinGame((PlayerProgression.Game.IGameGrain)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
                             case -1586169980: 
-                                return ((IPlayerGrain)grain).LeaveGame((IGameGrain)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
+                                return ((IPlayerGrain)grain).LeaveGame((PlayerProgression.Game.IGameGrain)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
                             case -553066157: 
                                 return ((IPlayerGrain)grain).QuickMatch().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             default: 
@@ -1158,7 +1544,7 @@ global::Orleans.CodeGeneration.GrainFactoryBase.CheckGrainObserverParamInternal(
             switch (interfaceId)
             {
                 
-                case -1602320946:  // IPlayerGrain
+                case -191510093:  // IPlayerGrain
                     switch (methodId)
                     {
                         case 1908871624:
@@ -1177,6 +1563,22 @@ global::Orleans.CodeGeneration.GrainFactoryBase.CheckGrainObserverParamInternal(
             }
         }
     }
+}
+namespace PlayerProgression
+{
+    using System;
+    using System.Net;
+    using System.Runtime.Serialization;
+    using System.Runtime.Serialization.Formatters.Binary;
+    using System.IO;
+    using System.Collections.Generic;
+    using System.Reflection;
+    using Orleans.Serialization;
+    using PlayerProgression;
+    using Orleans;
+    using Orleans.Runtime;
+    using Orleans.Core;
+    
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]

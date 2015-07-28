@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 using Orleans;
 using Orleans.Concurrency;
 using Orleans.Streams;
+using PlayerProgression.Game;
 
-namespace PlayerProgression
+namespace PlayerProgression.ProcessManagement
 {
     // TODO: Use consistent hashing for process instance look up.
     [Reentrant]
@@ -49,7 +50,7 @@ namespace PlayerProgression
             source.Peek().SetResult(processId);
 
             IGameGrain session = GrainFactory.GetGrain<IGameGrain>(processId);
-            session.SubscribeSessionStatus(this);
+            session.SubscribeStatus(this);
 
             try
             {
@@ -65,7 +66,7 @@ namespace PlayerProgression
         public Task ProcessExited(Guid processId)
         {
             IGameGrain session = GrainFactory.GetGrain<IGameGrain>(processId);
-            session.UnsubscribeSessionStatus(this);
+            session.UnsubscribeStatus(this);
             return TaskDone.Done;
         }
 
@@ -81,7 +82,7 @@ namespace PlayerProgression
             return TaskDone.Done;
         }
 
-        public void UpdateSessionStatus(Guid id, bool isAvailable)
+        public void UpdateGameStatus(Guid id, bool isAvailable)
         {
             if (sessionStatus.ContainsKey(id))
             {

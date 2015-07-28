@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Orleans;
+using Orleans.Streams;
+using PlayerProgression.Player;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Orleans;
-using Orleans.Streams;
 
-namespace PlayerProgression
+namespace PlayerProgression.Game
 {
     public class GameGrain : Grain, IGameGrain
     {
@@ -107,7 +107,7 @@ namespace PlayerProgression
         {
             // Notify process manager the status of this session has changed to NOT available.
             // TODO: Modify the status of game session to StatelessWorker + Shared read replicas (using consistent hashing).
-            subscribers.Notify((s) => s.UpdateSessionStatus(this.GetPrimaryKey(), false));
+            subscribers.Notify((s) => s.UpdateGameStatus(this.GetPrimaryKey(), false));
 
             foreach (long playerId in playerList)
             {
@@ -131,16 +131,16 @@ namespace PlayerProgression
                 RemovePlayer(player);
             }
             // Notify process manager the status of this session has changed to available again.
-            subscribers.Notify((s) => s.UpdateSessionStatus(this.GetPrimaryKey(), true));
+            subscribers.Notify((s) => s.UpdateGameStatus(this.GetPrimaryKey(), true));
         }
 
-        public Task SubscribeSessionStatus(IGameObserver subscriber)
+        public Task SubscribeStatus(IGameObserver subscriber)
         {
             subscribers.Subscribe(subscriber);
             return TaskDone.Done;
         }
 
-        public Task UnsubscribeSessionStatus(IGameObserver subscriber)
+        public Task UnsubscribeStatus(IGameObserver subscriber)
         {
             subscribers.Unsubscribe(subscriber);
             return TaskDone.Done;

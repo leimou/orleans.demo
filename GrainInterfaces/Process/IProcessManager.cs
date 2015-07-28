@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Orleans;
 
-namespace PlayerProgression
+namespace PlayerProgression.ProcessManagement
 {
     public interface IProcessManager : IGrainWithIntegerKey
     {

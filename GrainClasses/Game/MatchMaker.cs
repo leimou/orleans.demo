@@ -1,63 +1,45 @@
 ﻿using Orleans;
 using Orleans.Concurrency;
+using PlayerProgression.ProcessManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace PlayerProgression
+namespace PlayerProgression.Game
 {
     [Reentrant]
     class MatchMaker : Grain, IMatchMaker
     {
-        private Queue<TaskCompletionSource<Guid>> tasksQueue;
-        private Queue<long> matchQueue;
-        private Queue<Guid> gamesQueue;
+        private Queue<Guid> roomQueue;
         private IProcessManager mgr;
+        private int queuedPlayers; 
         
         public override Task OnActivateAsync()
         {
             mgr = GrainFactory.GetGrain<IProcessManager>(0);
-            tasksQueue = new Queue<TaskCompletionSource<Guid>>();
-            gamesQueue = new Queue<Guid>();
-            matchQueue = new Queue<long>();
+            roomQueue = new Queue<Guid>();
+            roomQueue.Enqueue(Guid.NewGuid());
+            queuedPlayers = 0;
+
             return TaskDone.Done;
         }
 
         public async Task<Guid> QuickMatch(long playerId)
         {
-            matchQueue.Enqueue(playerId);
-            if (tasksQueue.Count == 0)
+            IGameRoom room = GrainFactory.GetGrain<IGameRoom>(roomQueue.Last());
+            if (queuedPlayers < Constants.PlayersPerSession)
             {
-                tasksQueue.Enqueue(new TaskCompletionSource<Guid>());
-            }
-
-            if (matchQueue.Count % Constants.PlayersPerSession != 0)
-            {
-                return await tasksQueue.Last().Task;
+                queuedPlayers++;
+                await room.AddPlayer(playerId);
+                return roomQueue.Last();
             }
             else
             {
-                tasksQueue.Enqueue(new TaskCompletionSource<Guid>());
-                gamesQueue.Enqueue(await mgr.CreateProcess());
-
-                List<long> players = new List<long>();
-                for (int i = 0; i < Constants.PlayersPerSession; i++)
-                {
-                    players.Add(matchQueue.Dequeue());
-                }
-
-                Guid currentGame = gamesQueue.Dequeue();
-                List<Task> promises = new List<Task>();
-                for (int i = 0; i < Constants.PlayersPerSession; i++)
-                {
-                    promises.Add(mgr.AddPlayer(currentGame, players[i]));
-                }
-                tasksQueue.Dequeue().SetResult(currentGame);
-                await mgr.StartGame(currentGame);
-
-                return currentGame;
+                queuedPlayers = 0;
+                roomQueue.Enqueue(Guid.NewGuid());
+                await room.AddPlayer(playerId);
+                return roomQueue.Dequeue();
             }
         }
     }

@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Orleans;
+﻿using Orleans;
 using Orleans.Providers;
 using Orleans.Streams;
-using System.Threading;
+using PlayerProgression.Game;
+using System;
+using System.Threading.Tasks;
 
-namespace PlayerProgression
+namespace PlayerProgression.Player
 {
     public class PlayerState : GrainState
     {
@@ -18,7 +15,7 @@ namespace PlayerProgression
     }
 
     [StorageProvider(ProviderName = "TestStore")]
-    public class Player : Grain<PlayerState>, IPlayerGrain, IAsyncObserver<Progression>
+    public class Player : Grain<PlayerState>, IPlayerGrain, IRoomObserver, IAsyncObserver<Progression>
     {
         private IDisposable syncTimer;
         private IGameGrain currentGame;
@@ -51,8 +48,11 @@ namespace PlayerProgression
             {
                 previous = new Progression();
             }
-            syncTimer = base.RegisterTimer(TimerCallback, null, TimeSpan.Zero, TimeSpan.FromSeconds(2));
-
+            if (syncTimer == null)
+            {
+                syncTimer = base.RegisterTimer(TimerCallback, null, TimeSpan.Zero, TimeSpan.FromSeconds(2));
+            }
+            
             return TaskDone.Done;
         }
 
@@ -64,6 +64,7 @@ namespace PlayerProgression
         public Task LeaveGame(IGameGrain game)
         {
             syncTimer.Dispose();
+            syncTimer = null;
 
             currentGame = null;
             Console.WriteLine("Player {0} left game {1}", this.GetPrimaryKey(), game.GetPrimaryKey());
@@ -76,9 +77,14 @@ namespace PlayerProgression
 
         public async Task<Guid> QuickMatch()
         {
+            // Find an available room first
             IMatchMaker match = GrainFactory.GetGrain<IMatchMaker>(0);
-            Guid id = await match.QuickMatch(this.GetPrimaryKeyLong());
-            return id;
+            Guid roomId = await match.QuickMatch(this.GetPrimaryKeyLong());
+
+            IGameRoom room = GrainFactory.GetGrain<IGameRoom>(roomId);
+            await room.Subscribe(this);
+
+            return roomId;
         }
 
         public Task OnCompletedAsync()
@@ -104,6 +110,21 @@ namespace PlayerProgression
             previous.Experience = data.Experience;
 
             return TaskDone.Done;
+        }
+
+        public void GameStart(Guid gameId, int seconds)
+        {
+            currentGame = GrainFactory.GetGrain<IGameGrain>(gameId);
+            Console.WriteLine("Player {0} joined game {1}", this.GetPrimaryKeyLong(), gameId);
+
+            if (previous == null)
+            {
+                previous = new Progression();
+            }
+            if (syncTimer == null)
+            {
+                syncTimer = base.RegisterTimer(TimerCallback, null, TimeSpan.Zero, TimeSpan.FromSeconds(2));
+            }
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Orleans;
 
-namespace PlayerProgression
+namespace PlayerProgression.Game
 {   
     /// <summary>
     /// GameGrain represents a dedicated server process. 
@@ -18,12 +18,12 @@ namespace PlayerProgression
         Task UpdateGameStatistics(GameStatus status);
         Task GameStarts(List<long> players);
         Task GameEnds();
-        Task SubscribeSessionStatus(IGameObserver subscriber);
-        Task UnsubscribeSessionStatus(IGameObserver subscriber);
+        Task SubscribeStatus(IGameObserver subscriber);
+        Task UnsubscribeStatus(IGameObserver subscriber);
     }
 
     public interface IGameObserver : IGrainObserver
     {
-        void UpdateSessionStatus(Guid id, bool available);
+        void UpdateGameStatus(Guid id, bool available);
     }
 }

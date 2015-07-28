@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Orleans;
+using PlayerProgression.Game;
 
-namespace PlayerProgression
+namespace PlayerProgression.Player
 {
     public interface IPlayerGrain : IGrainWithIntegerKey
     {

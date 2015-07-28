@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Orleans;
+using System;
 using System.Threading.Tasks;
-using Orleans;
 
-namespace PlayerProgression
+namespace PlayerProgression.Game
 {
     public interface IMatchMaker : IGrainWithIntegerKey
     {

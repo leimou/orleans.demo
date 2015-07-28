@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Orleans;
 using Orleans.Concurrency;
+using PlayerProgression.Game;
 
 namespace PlayerProgression
 {
