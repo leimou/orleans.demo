@@ -130,7 +130,7 @@ namespace PlayerProgression
     class Program
     {
         static void Main(string[] args)
-      {
+        {
             GrpcEnvironment.Initialize();
             GrainClient.Initialize("DevTestClientConfiguration.xml");
 
