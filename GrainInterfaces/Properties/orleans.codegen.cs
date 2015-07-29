@@ -123,10 +123,10 @@ namespace PlayerProgression.Game
                 return GameRoomMethodInvoker.GetMethodName(interfaceId, methodId);
             }
             
-            System.Threading.Tasks.Task PlayerProgression.Game.IGameRoom.AddPlayer(long @playerId)
+            System.Threading.Tasks.Task<System.Guid> PlayerProgression.Game.IGameRoom.AddPlayer(long @playerId)
             {
 
-                return base.InvokeMethodAsync<object>(-1839323170, new object[] {@playerId} );
+                return base.InvokeMethodAsync<System.Guid>(-1839323170, new object[] {@playerId} );
             }
             
             System.Threading.Tasks.Task PlayerProgression.Game.IGameRoom.StartGame()
@@ -176,7 +176,7 @@ global::Orleans.CodeGeneration.GrainFactoryBase.CheckGrainObserverParamInternal(
                         switch (methodId)
                         {
                             case -1839323170: 
-                                return ((IGameRoom)grain).AddPlayer((Int64)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
+                                return ((IGameRoom)grain).AddPlayer((Int64)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case 797923165: 
                                 return ((IGameRoom)grain).StartGame().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
                             case -268291772: 

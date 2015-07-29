@@ -23,13 +23,15 @@ namespace PlayerProgression.Game
             return TaskDone.Done;
         }
 
-        public async Task AddPlayer(long playerId)
+        public async Task<Guid> AddPlayer(long playerId)
         {
             players.Add(playerId);
             if (players.Count == Constants.PlayersPerSession)
             {
+                Console.WriteLine("Room {0}, ready to start game ...", this.GetPrimaryKey());
                 await StartGame();
             }
+            return this.GetPrimaryKey();
         }
 
         public async Task StartGame()
@@ -46,6 +48,8 @@ namespace PlayerProgression.Game
 
             observers.Notify((o) => o.GameStart(newGame, 0));
             observers.Clear();
+
+            await mgr.StartGame(newGame);
         }
 
         public Task Subscribe(IRoomObserver observer)

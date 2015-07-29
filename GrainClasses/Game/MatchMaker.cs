@@ -27,19 +27,22 @@ namespace PlayerProgression.Game
 
         public async Task<Guid> QuickMatch(long playerId)
         {
-            IGameRoom room = GrainFactory.GetGrain<IGameRoom>(roomQueue.Last());
+            IGameRoom room = null; 
             if (queuedPlayers < Constants.PlayersPerSession)
             {
+                room = GrainFactory.GetGrain<IGameRoom>(roomQueue.Last());
+
                 queuedPlayers++;
-                await room.AddPlayer(playerId);
-                return roomQueue.Last();
+                return await room.AddPlayer(playerId);
             }
             else
             {
-                queuedPlayers = 0;
                 roomQueue.Enqueue(Guid.NewGuid());
-                await room.AddPlayer(playerId);
-                return roomQueue.Dequeue();
+                roomQueue.Dequeue();
+                room = GrainFactory.GetGrain<IGameRoom>(roomQueue.Last());
+                queuedPlayers = 1;
+
+                return await room.AddPlayer(playerId);
             }
         }
     }

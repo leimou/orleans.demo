@@ -20,9 +20,9 @@ namespace LoadGenerator
         private async Task<Guid> QuickMatch(int playerId)
         {
             IPlayerGrain player = GrainClient.GrainFactory.GetGrain<IPlayerGrain>(playerId);
-            Guid id = await player.QuickMatch();
-            Console.WriteLine("Player {0} joined game session {1}", playerId, id);
-            return id;
+            Guid roomId = await player.QuickMatch();
+            Console.WriteLine("Player {0} joined game room {1}", playerId, roomId);
+            return roomId;
         }
 
         public async void Start()

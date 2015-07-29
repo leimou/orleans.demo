@@ -9,7 +9,7 @@ namespace PlayerProgression.Game
 {
     public interface IGameRoom : IGrainWithGuidKey
     {
-        Task AddPlayer(long playerId);
+        Task<Guid> AddPlayer(long playerId);
 
         Task StartGame();
 
