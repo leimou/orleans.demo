@@ -27,12 +27,10 @@ namespace LoadGenerator
 
         public async void Start()
         {
-            List<Task<Guid>> promises = new List<Task<Guid>>();
             for (int i = 0; i < numberOfPlayers; i++)
             {
-                promises.Add(QuickMatch(i + startIndex));
+                await QuickMatch(i + startIndex);
             }
-            await Task.WhenAll(promises);
         }
     }
 
