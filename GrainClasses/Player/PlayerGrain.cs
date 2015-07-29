@@ -41,18 +41,7 @@ namespace PlayerProgression.Player
 
         public Task JoinGame(IGameGrain game)
         {
-            currentGame = game;
-            Console.WriteLine("Player {0} joined game {1}", this.GetPrimaryKeyLong(), game.GetPrimaryKey());
-
-            if (previous == null)
-            {
-                previous = new Progression();
-            }
-            if (syncTimer == null)
-            {
-                syncTimer = base.RegisterTimer(TimerCallback, null, TimeSpan.Zero, TimeSpan.FromSeconds(2));
-            }
-            
+            GameStart(game.GetPrimaryKey(), 0);            
             return TaskDone.Done;
         }
 

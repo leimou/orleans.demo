@@ -1037,10 +1037,10 @@ namespace PlayerProgression.ProcessManagement
                 return ProcessManagerMethodInvoker.GetMethodName(interfaceId, methodId);
             }
             
-            System.Threading.Tasks.Task<System.Guid> PlayerProgression.ProcessManagement.IProcessManager.CreateProcess()
+            System.Threading.Tasks.Task<System.Guid> PlayerProgression.ProcessManagement.IProcessManager.GetProcess()
             {
 
-                return base.InvokeMethodAsync<System.Guid>(651444950, null );
+                return base.InvokeMethodAsync<System.Guid>(-1754594990, null );
             }
             
             System.Threading.Tasks.Task PlayerProgression.ProcessManagement.IProcessManager.ProcessCreated(System.Guid @processId)
@@ -1080,12 +1080,6 @@ global::Orleans.CodeGeneration.GrainFactoryBase.CheckGrainObserverParamInternal(
 
                 return base.InvokeMethodAsync<object>(1789767630, new object[] {@subscriber is global::Orleans.Grain ? @subscriber.AsReference<PlayerProgression.ProcessManagement.IProcessMgrObserver>() : @subscriber} );
             }
-            
-            System.Threading.Tasks.Task<System.Guid> PlayerProgression.ProcessManagement.IProcessManager.FindAvailableSession()
-            {
-
-                return base.InvokeMethodAsync<System.Guid>(526784679, null );
-            }
         }
     }
     
@@ -1113,8 +1107,8 @@ global::Orleans.CodeGeneration.GrainFactoryBase.CheckGrainObserverParamInternal(
                     case 709694133:  // IProcessManager
                         switch (methodId)
                         {
-                            case 651444950: 
-                                return ((IProcessManager)grain).CreateProcess().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
+                            case -1754594990: 
+                                return ((IProcessManager)grain).GetProcess().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case -1044420421: 
                                 return ((IProcessManager)grain).ProcessCreated((Guid)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
                             case 274862336: 
@@ -1127,8 +1121,6 @@ global::Orleans.CodeGeneration.GrainFactoryBase.CheckGrainObserverParamInternal(
                                 return ((IProcessManager)grain).SubscribeNotification((IProcessMgrObserver)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
                             case 1789767630: 
                                 return ((IProcessManager)grain).UnsubscribeNotification((IProcessMgrObserver)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
-                            case 526784679: 
-                                return ((IProcessManager)grain).FindAvailableSession().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             default: 
                             throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
                         }
@@ -1153,8 +1145,8 @@ global::Orleans.CodeGeneration.GrainFactoryBase.CheckGrainObserverParamInternal(
                 case 709694133:  // IProcessManager
                     switch (methodId)
                     {
-                        case 651444950:
-                            return "CreateProcess";
+                        case -1754594990:
+                            return "GetProcess";
                     case -1044420421:
                             return "ProcessCreated";
                     case 274862336:
@@ -1167,8 +1159,6 @@ global::Orleans.CodeGeneration.GrainFactoryBase.CheckGrainObserverParamInternal(
                             return "SubscribeNotification";
                     case 1789767630:
                             return "UnsubscribeNotification";
-                    case 526784679:
-                            return "FindAvailableSession";
                     
                         default: 
                             throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);

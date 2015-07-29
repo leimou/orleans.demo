@@ -9,11 +9,8 @@ namespace PlayerProgression.ProcessManagement
 {
     public interface IProcessManager : IGrainWithIntegerKey
     {
-        // Called by matcher: Needs a new dedicated server process.
-        // The arguments player id list is a hack for illustration purpose, it's not necessary.
-        // Since client will communicate with Dedicated Server using UDP protocol, it's not necessary
-        // to explicit specify user ids during process creation. 
-        Task<Guid> CreateProcess();
+        // Get available process.
+        Task<Guid> GetProcess();
 
         // Called by client: a new process with processId has been created.
         Task ProcessCreated(Guid processId);
@@ -28,8 +25,6 @@ namespace PlayerProgression.ProcessManagement
         Task SubscribeNotification(IProcessMgrObserver subscriber);
 
         Task UnsubscribeNotification(IProcessMgrObserver subscriber);
-
-        Task<Guid> FindAvailableSession();
     }
 
     public interface IProcessMgrObserver : IGrainObserver

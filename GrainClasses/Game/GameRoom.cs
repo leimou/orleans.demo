@@ -36,7 +36,7 @@ namespace PlayerProgression.Game
 
         public async Task StartGame()
         {
-            Guid newGame = await mgr.CreateProcess();
+            Guid newGame = await mgr.GetProcess();
 
             List<Task> promises = new List<Task>();
             for (int i = 0; i < players.Count; i++)

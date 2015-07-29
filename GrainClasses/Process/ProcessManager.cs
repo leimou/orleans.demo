@@ -16,12 +16,12 @@ namespace PlayerProgression.ProcessManagement
     {
         private ObserverSubscriptionManager<IProcessMgrObserver> subscribers;
         private Queue<TaskCompletionSource<Guid>> source;
-        private Dictionary<Guid, bool> sessionStatus;
+        private Dictionary<Guid, bool> processStatus;
 
         public override Task OnActivateAsync()
         {
             subscribers = new ObserverSubscriptionManager<IProcessMgrObserver>();
-            sessionStatus = new Dictionary<Guid, bool>();
+            processStatus = new Dictionary<Guid, bool>();
             source = new Queue<TaskCompletionSource<Guid>>();
 
             return base.OnActivateAsync();
@@ -34,7 +34,7 @@ namespace PlayerProgression.ProcessManagement
         }
 
         // Called by matcher: Needs a new dedicated server process.
-        public async Task<Guid> CreateProcess()
+        private async Task<Guid> CreateProcess()
         {
             source.Enqueue(new TaskCompletionSource<Guid>());
             subscribers.Notify((s) => s.CreateProcess());
@@ -54,7 +54,7 @@ namespace PlayerProgression.ProcessManagement
 
             try
             {
-                sessionStatus.Add(processId, true);
+                processStatus.Add(processId, false);
             }
             catch (Exception)
             {
@@ -84,9 +84,10 @@ namespace PlayerProgression.ProcessManagement
 
         public void UpdateGameStatus(Guid id, bool isAvailable)
         {
-            if (sessionStatus.ContainsKey(id))
+            if (processStatus.ContainsKey(id))
             {
-                sessionStatus[id] = isAvailable;
+                Console.WriteLine("Game session {0} changed available status to {1}", id, isAvailable);
+                processStatus[id] = isAvailable;
             }
             else
             {
@@ -94,21 +95,21 @@ namespace PlayerProgression.ProcessManagement
             }
         }
         
-        public Task<Guid> FindAvailableSession()
+        public async Task<Guid> GetProcess()
         {
-            if (sessionStatus.Count == 0)
+            if (processStatus.Count == 0)
             {
-                return Task.FromResult<Guid>(Guid.Empty);
+                return await CreateProcess();
             }
             else
             {
-                foreach (var pair in sessionStatus)
+                foreach (var pair in processStatus)
                 {
                     if (pair.Value == true) {
-                        return Task.FromResult(pair.Key);
+                        return await Task.FromResult(pair.Key);
                     }
                 }
-                return Task.FromResult<Guid>(Guid.Empty);
+                return await CreateProcess();
             }
         }
 
