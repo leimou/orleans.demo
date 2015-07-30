@@ -44,12 +44,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\IGrainStateManager.cs" />
     <Compile Include="Game\IGameRoom.cs" />
     <Compile Include="Game\ILeaderBoard.cs" />
     <Compile Include="Game\IMatchMaker.cs" />
     <Compile Include="Process\IProcessManager.cs" />
     <Compile Include="Game\IGameGrain.cs" />
     <Compile Include="Player\IPlayerGrain.cs" />
+    <Compile Include="Process\IProcessState.cs" />
     <Compile Include="Stateless\IDispatcher.cs" />
     <Compile Include="Properties\orleans.codegen.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

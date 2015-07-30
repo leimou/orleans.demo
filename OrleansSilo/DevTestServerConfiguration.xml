@@ -12,22 +12,24 @@
     <StreamProviders>
       <Provider Type="Orleans.Providers.Streams.SimpleMessageStream.SimpleMessageStreamProvider" Name="SMSProvider" FireAndForgetDelivery="false"/>
     </StreamProviders>
-    <SeedNode Address="localhost" Port="11111" />
-    <!-- <SystemStore
-      DataConnectionString="172.17.15.67"
+    <!-- <SeedNode Address="localhost" Port="11111" /> -->
+    <SystemStore
+      DataConnectionString="172.17.15.106"
       DeploymentId="crysis"
-      SystemStoreType="ZooKeeper"/> -->
+      SystemStoreType="ZooKeeper"/>
   </Globals>
   <Defaults>
-    <Networking Address="localhost" Port="11111" />
-    <ProxyingGateway Address="localhost" Port="30000" />
+    <Networking Port="11111" />
+    <ProxyingGateway Address="172.17.15.107" Port="30000" />
     <Tracing DefaultTraceLevel="Info" TraceToConsole="true" TraceToFile="{0}-{1}.log">
       <TraceLevelOverride LogPrefix="Application" TraceLevel="Info" />
     </Tracing>
     <Statistics MetricsTableWriteInterval="30s" PerfCounterWriteInterval="30s" LogWriteInterval="300s" WriteLogStatisticsToTable="true"/>
   </Defaults>
+  <!--
   <Override Node="Primary">
     <Networking Address="localhost" Port="11111" />
     <ProxyingGateway Address="localhost" Port="30000" />
   </Override>
+  -->
 </OrleansConfiguration>

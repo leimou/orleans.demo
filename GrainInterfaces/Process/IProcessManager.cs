@@ -29,7 +29,7 @@ namespace PlayerProgression.ProcessManagement
 
     public interface IProcessMgrObserver : IGrainObserver
     {
-        // Request for creating dedicated server process, with guid as its id.
+        // Request for creating dedicated server process
         void CreateProcess();
 
         void AddPlayer(Guid gameId, long playerId);

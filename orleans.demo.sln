@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrainClasses", "GrainClasses\GrainClasses.csproj", "{9B6F6BF8-7133-46BE-B112-E7B6BF015A9A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tester", "Tester\Tester.csproj", "{22156F1E-12C4-42A3-A152-8D3CDB40D1A8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{9B6F6BF8-7133-46BE-B112-E7B6BF015A9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B6F6BF8-7133-46BE-B112-E7B6BF015A9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B6F6BF8-7133-46BE-B112-E7B6BF015A9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22156F1E-12C4-42A3-A152-8D3CDB40D1A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22156F1E-12C4-42A3-A152-8D3CDB40D1A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22156F1E-12C4-42A3-A152-8D3CDB40D1A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22156F1E-12C4-42A3-A152-8D3CDB40D1A8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
