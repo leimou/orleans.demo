@@ -143,6 +143,27 @@ namespace PlayerProgression.Common
             return slot.UpdateGrainState(primaryKey, state);
         }
 
+        public async Task<Guid> GetGrain(GrainSelector<T> selector)
+        {
+            List<Task<Guid>> promises = new List<Task<Guid>>();
+            for (int i = 0; i < sortedKeys.Count(); i++)
+            {
+                var slot = GrainFactory.GetGrain<IGrainStateSlot<T>>(circle[sortedKeys[i]]);
+                promises.Add(slot.GetGrain(selector));
+            }
+
+            // TODO: Protential bottleneck, better to optimize according to different type of query.
+            Guid[] selected = await Task.WhenAll(promises);
+            foreach (Guid id in selected)
+            {
+                if (id != Guid.Empty)
+                {
+                    return id;
+                }
+            }
+            return Guid.Empty;
+        }
+
         public Task AddSlot()
         {
             throw new NotImplementedException();
@@ -258,6 +279,18 @@ namespace PlayerProgression.Common
                 string msg = string.Format("State of grain {0} not managed by slot {1}", primaryKey, this.GetPrimaryKey());
                 throw new Exception(msg);
             }
+        }
+
+        public Task<Guid> GetGrain(GrainSelector<T> selector)
+        {
+            foreach (var grain in states)
+            {
+                if (selector(states[grain.Key]) == true)
+                {
+                    return Task.FromResult(grain.Key);
+                }
+            }
+            return Task.FromResult(Guid.Empty);
         }
     }
 }

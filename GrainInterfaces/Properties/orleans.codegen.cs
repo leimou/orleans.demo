@@ -24,6 +24,9 @@ namespace PlayerProgression.Common
     using System.Runtime.Serialization.Formatters.Binary;
     using System.IO;
     using System.Collections.Generic;
+    using System.Reflection;
+    using Orleans.Serialization;
+    using PlayerProgression.Common;
     using Orleans;
     using Orleans.Runtime;
     using Orleans.Core;
@@ -161,6 +164,12 @@ namespace PlayerProgression.Common
 
                 return base.InvokeMethodAsync<object>(2142459477, null );
             }
+            
+            System.Threading.Tasks.Task<System.Guid> PlayerProgression.Common.IGrainStateManager<T>.GetGrain(GrainSelector<T> @selector)
+            {
+
+                return base.InvokeMethodAsync<System.Guid>(-1192629697, new object[] {@selector} );
+            }
         }
     }
     
@@ -201,6 +210,8 @@ namespace PlayerProgression.Common
                                 return ((IGrainStateManager<T>)grain).Init((Int32)arguments[0], (Int32)arguments[1]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
                             case 2142459477: 
                                 return ((IGrainStateManager<T>)grain).AddSlot().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
+                            case -1192629697: 
+                                return ((IGrainStateManager<T>)grain).GetGrain((GrainSelector<T>)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             default: 
                             throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
                         }
@@ -237,6 +248,8 @@ namespace PlayerProgression.Common
                             return "Init";
                     case 2142459477:
                             return "AddSlot";
+                    case -1192629697:
+                            return "GetGrain";
                     
                         default: 
                             throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
@@ -368,6 +381,12 @@ namespace PlayerProgression.Common
 
                 return base.InvokeMethodAsync<object>(1860823552, new object[] {@primaryKey, @state} );
             }
+            
+            System.Threading.Tasks.Task<System.Guid> PlayerProgression.Common.IGrainStateSlot<T>.GetGrain(GrainSelector<T> @selector)
+            {
+
+                return base.InvokeMethodAsync<System.Guid>(-1192629697, new object[] {@selector} );
+            }
         }
     }
     
@@ -404,6 +423,8 @@ namespace PlayerProgression.Common
                                 return ((IGrainStateSlot<T>)grain).RemoveGrainState((Guid)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
                             case 1860823552: 
                                 return ((IGrainStateSlot<T>)grain).UpdateGrainState((Guid)arguments[0], (T)arguments[1]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
+                            case -1192629697: 
+                                return ((IGrainStateSlot<T>)grain).GetGrain((GrainSelector<T>)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             default: 
                             throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
                         }
@@ -436,6 +457,8 @@ namespace PlayerProgression.Common
                             return "RemoveGrainState";
                     case 1860823552:
                             return "UpdateGrainState";
+                    case -1192629697:
+                            return "GetGrain";
                     
                         default: 
                             throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
@@ -567,6 +590,12 @@ namespace PlayerProgression.Common
 
                 return base.InvokeMethodAsync<object>(1860823552, new object[] {@primaryKey, @state} );
             }
+            
+            System.Threading.Tasks.Task<System.Guid> PlayerProgression.Common.IGrainStateProxy<T>.GetGrain(GrainSelector<T> @selector)
+            {
+
+                return base.InvokeMethodAsync<System.Guid>(-1192629697, new object[] {@selector} );
+            }
         }
     }
     
@@ -603,6 +632,8 @@ namespace PlayerProgression.Common
                                 return ((IGrainStateProxy<T>)grain).RemoveGrainState((Guid)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
                             case 1860823552: 
                                 return ((IGrainStateProxy<T>)grain).UpdateGrainState((Guid)arguments[0], (T)arguments[1]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
+                            case -1192629697: 
+                                return ((IGrainStateProxy<T>)grain).GetGrain((GrainSelector<T>)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             default: 
                             throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
                         }
@@ -635,6 +666,8 @@ namespace PlayerProgression.Common
                             return "RemoveGrainState";
                     case 1860823552:
                             return "UpdateGrainState";
+                    case -1192629697:
+                            return "GetGrain";
                     
                         default: 
                             throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
@@ -643,6 +676,143 @@ namespace PlayerProgression.Common
                 default:
                     throw new System.InvalidCastException("interfaceId="+interfaceId);
             }
+        }
+    }
+    
+    [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
+    internal class GrainSelectorGenericMaster
+    {
+        
+        public static void Register()
+        {
+            global::Orleans.Serialization.SerializationManager.Register(typeof(PlayerProgression.Common.GrainSelector<>), GrainSelectorGenericMaster.GenericCopier, GrainSelectorGenericMaster.GenericSerializer, GrainSelectorGenericMaster.GenericDeserializer);
+        }
+        
+        public static System.Type CreateConcreteType(System.Type[] typeParams)
+        {
+            return typeof(PlayerProgression_Common_GrainSelectorSerialization<>).MakeGenericType(typeParams);
+        }
+        
+        public static object GenericCopier(object obj)
+        {
+            System.Type t = GrainSelectorGenericMaster.CreateConcreteType(obj.GetType().GetGenericArguments());
+            System.Reflection.MethodInfo f = t.GetMethod("DeepCopier");
+            object[] args = new object[] {
+                    obj};
+            return f.Invoke(null, args);
+        }
+        
+        public static void GenericSerializer(object input, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
+        {
+            System.Type t = GrainSelectorGenericMaster.CreateConcreteType(input.GetType().GetGenericArguments());
+            System.Reflection.MethodInfo f = t.GetMethod("Serializer");
+            object[] args = new object[] {
+                    input,
+                    stream,
+                    expected};
+            f.Invoke(null, args);
+        }
+        
+        public static object GenericDeserializer(System.Type expected, Orleans.Serialization.BinaryTokenStreamReader stream)
+        {
+            System.Type t = GrainSelectorGenericMaster.CreateConcreteType(expected.GetGenericArguments());
+            System.Reflection.MethodInfo f = t.GetMethod("Deserializer");
+            object[] args = new object[] {
+                    expected,
+                    stream};
+            return f.Invoke(null, args);
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    internal class PlayerProgression_Common_GrainSelectorSerialization<T>
+    
+    {
+        
+        private static System.Reflection.FieldInfo fieldInfo1;
+        
+        private static System.Reflection.FieldInfo fieldInfo2;
+        
+        private static System.Reflection.FieldInfo fieldInfo3;
+        
+        private static System.Reflection.FieldInfo fieldInfo4;
+        
+        private static System.Reflection.FieldInfo fieldInfo5;
+        
+        private static System.Reflection.FieldInfo fieldInfo6;
+        
+        static PlayerProgression_Common_GrainSelectorSerialization()
+        {
+            Register();
+        }
+        
+        public static object DeepCopier(object original)
+        {
+            PlayerProgression.Common.GrainSelector<T> input = ((PlayerProgression.Common.GrainSelector<T>)(original));
+            PlayerProgression.Common.GrainSelector<T> result = ((PlayerProgression.Common.GrainSelector<T>)(System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(GrainSelector<T>))));
+            Orleans.Serialization.SerializationContext.Current.RecordObject(original, result);
+            object objResult = ((object)(result));
+            object temp1 = fieldInfo1.GetValue(input);
+            fieldInfo1.SetValue(objResult, temp1);
+            object temp2 = Orleans.Serialization.SerializationManager.DeepCopyInner(fieldInfo2.GetValue(input));
+            fieldInfo2.SetValue(objResult, temp2);
+            object temp3 = Orleans.Serialization.SerializationManager.DeepCopyInner(fieldInfo3.GetValue(input));
+            fieldInfo3.SetValue(objResult, temp3);
+            object temp4 = fieldInfo4.GetValue(input);
+            fieldInfo4.SetValue(objResult, temp4);
+            object temp5 = fieldInfo5.GetValue(input);
+            fieldInfo5.SetValue(objResult, temp5);
+            object temp6 = Orleans.Serialization.SerializationManager.DeepCopyInner(fieldInfo6.GetValue(input));
+            fieldInfo6.SetValue(objResult, temp6);
+            return objResult;
+        }
+        
+        public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
+        {
+            PlayerProgression.Common.GrainSelector<T> input = ((PlayerProgression.Common.GrainSelector<T>)(untypedInput));
+            Orleans.Serialization.SerializationManager.SerializeInner(fieldInfo1.GetValue(input), stream, typeof(System.IntPtr));
+            Orleans.Serialization.SerializationManager.SerializeInner(fieldInfo2.GetValue(input), stream, typeof(object));
+            Orleans.Serialization.SerializationManager.SerializeInner(fieldInfo3.GetValue(input), stream, typeof(object));
+            Orleans.Serialization.SerializationManager.SerializeInner(fieldInfo4.GetValue(input), stream, typeof(System.IntPtr));
+            Orleans.Serialization.SerializationManager.SerializeInner(fieldInfo5.GetValue(input), stream, typeof(System.IntPtr));
+            Orleans.Serialization.SerializationManager.SerializeInner(fieldInfo6.GetValue(input), stream, typeof(object));
+        }
+        
+        public static object Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
+        {
+            PlayerProgression.Common.GrainSelector<T> result = ((PlayerProgression.Common.GrainSelector<T>)(System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(GrainSelector<T>))));
+            object objResult = ((object)(result));
+            object temp1 = ((System.IntPtr)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.IntPtr), stream)));
+            fieldInfo1.SetValue(objResult, temp1);
+            object temp2 = ((object)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(object), stream)));
+            fieldInfo2.SetValue(objResult, temp2);
+            object temp3 = ((object)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(object), stream)));
+            fieldInfo3.SetValue(objResult, temp3);
+            object temp4 = ((System.IntPtr)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.IntPtr), stream)));
+            fieldInfo4.SetValue(objResult, temp4);
+            object temp5 = ((System.IntPtr)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.IntPtr), stream)));
+            fieldInfo5.SetValue(objResult, temp5);
+            object temp6 = ((object)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(object), stream)));
+            fieldInfo6.SetValue(objResult, temp6);
+            return objResult;
+        }
+        
+        public static void Register()
+        {
+            global::Orleans.Serialization.SerializationManager.Register(typeof(PlayerProgression.Common.GrainSelector<T>), DeepCopier, Serializer, Deserializer);
+            fieldInfo1 = typeof(System.MulticastDelegate).GetField("_invocationCount", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo2 = typeof(System.MulticastDelegate).GetField("_invocationList", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo3 = typeof(PlayerProgression.Common.GrainSelector<T>).GetField("_methodBase", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo4 = typeof(PlayerProgression.Common.GrainSelector<T>).GetField("_methodPtr", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo5 = typeof(PlayerProgression.Common.GrainSelector<T>).GetField("_methodPtrAux", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo6 = typeof(PlayerProgression.Common.GrainSelector<T>).GetField("_target", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
         }
     }
 }

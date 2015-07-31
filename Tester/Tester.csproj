@@ -94,6 +94,16 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GrainClasses\GrainClasses.csproj">
+      <Project>{9b6f6bf8-7133-46be-b112-e7b6bf015a9a}</Project>
+      <Name>GrainClasses</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GrainInterfaces\GrainInterfaces.csproj">
+      <Project>{2a1c39ad-3cce-4f43-a84b-c0491bef1818}</Project>
+      <Name>GrainInterfaces</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

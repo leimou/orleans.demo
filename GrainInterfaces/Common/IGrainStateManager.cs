@@ -46,6 +46,8 @@ namespace PlayerProgression.Common
         // Add a slot to the hash ring. A set of grain state will be 
         // distributed to the new slot.
         Task AddSlot();
+
+        Task<Guid> GetGrain(GrainSelector<T> selector);
     }
 
     public interface IGrainStateSlot<T> : IGrainWithIntegerKey
@@ -61,5 +63,7 @@ namespace PlayerProgression.Common
 
         // Update grain state in slot
         Task UpdateGrainState(Guid primaryKey, T state);
+
+        Task<Guid> GetGrain(GrainSelector<T> selector);
     }
 }
