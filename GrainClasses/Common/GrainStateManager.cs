@@ -85,15 +85,13 @@ namespace PlayerProgression.Common
 
     class GrainStateManager<T> : Grain, IGrainStateManager<T>
     {
-        private SortedDictionary<uint, Guid> circle;
-        private HashSet<Guid> slots;
+        private SortedDictionary<uint, int> circle;
         private uint[] sortedKeys = null;
         private int replicas;
 
         public override Task OnActivateAsync()
         {
-            circle = new SortedDictionary<uint, Guid>();
-            slots = new HashSet<Guid>();
+            circle = new SortedDictionary<uint, int>();
             replicas = 0;
 
             return TaskDone.Done;
@@ -104,14 +102,12 @@ namespace PlayerProgression.Common
             this.replicas = replicas;
             for (int i = 0; i < slotCount; i++)
             {
-                slots.Add(Guid.NewGuid());
-            }
+                IGrainStateSlot<T> slot = GrainFactory.GetGrain<IGrainStateSlot<T>>(i);
+                Guid key = slot.GetPrimaryKey();
 
-            foreach (Guid slot in slots)
-            {
-                for (int i = 0; i < replicas; i++)
+                for (int j = 0; j < replicas; j++) 
                 {
-                    circle.Add(SlotHash(slot, i), slot);
+                    circle.Add(SlotHash(key, i), i);
                 }
             }
             sortedKeys = circle.Keys.ToArray();
@@ -183,13 +179,13 @@ namespace PlayerProgression.Common
 
         private uint GrainHash(Guid primaryKey)
         {
-            string code = slots.GetHashCode().ToString();
+            string code = primaryKey.GetHashCode().ToString();
             return MurmurHash2.Hash(Encoding.ASCII.GetBytes(code));
         }
 
-        private uint SlotHash(Guid slot, int replica)
+        private uint SlotHash(Guid primaryKey, int replica)
         {
-            string code = slot.GetHashCode().ToString() + replica;
+            string code = primaryKey.GetHashCode().ToString() + replica;
             return MurmurHash2.Hash(Encoding.ASCII.GetBytes(code));
         }
 

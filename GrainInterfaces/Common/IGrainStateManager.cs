@@ -48,7 +48,7 @@ namespace PlayerProgression.Common
         Task AddSlot();
     }
 
-    public interface IGrainStateSlot<T> : IGrainWithGuidKey
+    public interface IGrainStateSlot<T> : IGrainWithIntegerKey
     {
         // Get Grain state.
         Task<T> GetGrainState(Guid primaryKey);

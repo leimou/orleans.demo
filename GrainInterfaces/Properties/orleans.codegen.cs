@@ -256,13 +256,13 @@ namespace PlayerProgression.Common
         
 
                         [System.Obsolete("This method has been deprecated. Please use GrainFactory.GetGrain<IGrainStateSlot<T>> instead.")]
-                        public static IGrainStateSlot<T> GetGrain(System.Guid primaryKey)
+                        public static IGrainStateSlot<T> GetGrain(long primaryKey)
                         {
                             return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(IGrainStateSlot<T>), primaryKey));
                         }
 
                         [System.Obsolete("This method has been deprecated. Please use GrainFactory.GetGrain<IGrainStateSlot<T>> instead.")]
-                        public static IGrainStateSlot<T> GetGrain(System.Guid primaryKey, string grainClassNamePrefix)
+                        public static IGrainStateSlot<T> GetGrain(long primaryKey, string grainClassNamePrefix)
                         {
                             return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(IGrainStateSlot<T>), primaryKey, grainClassNamePrefix));
                         }
@@ -432,6 +432,205 @@ namespace PlayerProgression.Common
                             return "GetGrainState";
                     case -1641608289:
                             return "AddGrainState";
+                    case -620800765:
+                            return "RemoveGrainState";
+                    case 1860823552:
+                            return "UpdateGrainState";
+                    
+                        default: 
+                            throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
+                    }
+
+                default:
+                    throw new System.InvalidCastException("interfaceId="+interfaceId);
+            }
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    public class GrainStateProxyFactory<T>
+    
+    {
+        
+
+                        [System.Obsolete("This method has been deprecated. Please use GrainFactory.GetGrain<IGrainStateProxy<T>> instead.")]
+                        public static IGrainStateProxy<T> GetGrain(System.Guid primaryKey)
+                        {
+                            return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(IGrainStateProxy<T>), primaryKey));
+                        }
+
+                        [System.Obsolete("This method has been deprecated. Please use GrainFactory.GetGrain<IGrainStateProxy<T>> instead.")]
+                        public static IGrainStateProxy<T> GetGrain(System.Guid primaryKey, string grainClassNamePrefix)
+                        {
+                            return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(IGrainStateProxy<T>), primaryKey, grainClassNamePrefix));
+                        }
+
+            public static IGrainStateProxy<T> Cast(global::Orleans.Runtime.IAddressable grainRef)
+            {
+                
+                return GrainStateProxyReference<T>.Cast(grainRef);
+            }
+        
+        [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
+        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+        [System.SerializableAttribute()]
+        [global::Orleans.CodeGeneration.GrainReferenceAttribute("PlayerProgression.Common.IGrainStateProxy<T>")]
+        internal class GrainStateProxyReference<T> : global::Orleans.Runtime.GrainReference, global::Orleans.Runtime.IAddressable, PlayerProgression.Common.IGrainStateProxy<T>
+        
+        {
+            
+
+            public static IGrainStateProxy<T> Cast(global::Orleans.Runtime.IAddressable grainRef)
+            {
+                
+                return (IGrainStateProxy<T>) global::Orleans.Runtime.GrainReference.CastInternal(typeof(IGrainStateProxy<T>), (global::Orleans.Runtime.GrainReference gr) => { return new GrainStateProxyReference<T>(gr);}, grainRef, 1460086779);
+            }
+            
+            protected internal GrainStateProxyReference(global::Orleans.Runtime.GrainReference reference) : 
+                    base(reference)
+            {
+            }
+            
+            protected internal GrainStateProxyReference(SerializationInfo info, StreamingContext context) : 
+                    base(info, context)
+            {
+            }
+            
+            protected override int InterfaceId
+            {
+                get
+                {
+                    return 1460086779;
+                }
+            }
+            
+            public override string InterfaceName
+            {
+                get
+                {
+                    return "PlayerProgression.Common.IGrainStateProxy<T>";
+                }
+            }
+            
+            [global::Orleans.CodeGeneration.CopierMethodAttribute()]
+            public static object _Copier(object original)
+            {
+                GrainStateProxyReference<T> input = ((GrainStateProxyReference<T>)(original));
+                return ((GrainStateProxyReference<T>)(global::Orleans.Runtime.GrainReference.CopyGrainReference(input)));
+            }
+            
+            [global::Orleans.CodeGeneration.SerializerMethodAttribute()]
+            public static void _Serializer(object original, global::Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
+            {
+                GrainStateProxyReference<T> input = ((GrainStateProxyReference<T>)(original));
+                global::Orleans.Runtime.GrainReference.SerializeGrainReference(input, stream, expected);
+            }
+            
+            [global::Orleans.CodeGeneration.DeserializerMethodAttribute()]
+            public static object _Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
+            {
+                return GrainStateProxyReference<T>.Cast(((global::Orleans.Runtime.GrainReference)(global::Orleans.Runtime.GrainReference.DeserializeGrainReference(expected, stream))));
+            }
+            
+            public override bool IsCompatible(int interfaceId)
+            {
+                return ((interfaceId == this.InterfaceId) 
+                            || (interfaceId == 1720498652));
+            }
+            
+            protected override string GetMethodName(int interfaceId, int methodId)
+            {
+                return GrainStateProxyMethodInvoker<T>.GetMethodName(interfaceId, methodId);
+            }
+            
+            System.Threading.Tasks.Task PlayerProgression.Common.IGrainStateProxy<T>.AddGrainState(System.Guid @primaryKey)
+            {
+
+                return base.InvokeMethodAsync<object>(-1641608289, new object[] {@primaryKey} );
+            }
+            
+            System.Threading.Tasks.Task<T> PlayerProgression.Common.IGrainStateProxy<T>.GetGrainState(System.Guid @primaryKey)
+            {
+
+                return base.InvokeMethodAsync<T>(-469940391, new object[] {@primaryKey} );
+            }
+            
+            System.Threading.Tasks.Task PlayerProgression.Common.IGrainStateProxy<T>.RemoveGrainState(System.Guid @primaryKey)
+            {
+
+                return base.InvokeMethodAsync<object>(-620800765, new object[] {@primaryKey} );
+            }
+            
+            System.Threading.Tasks.Task PlayerProgression.Common.IGrainStateProxy<T>.UpdateGrainState(System.Guid @primaryKey, T @state)
+            {
+
+                return base.InvokeMethodAsync<object>(1860823552, new object[] {@primaryKey, @state} );
+            }
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    [global::Orleans.CodeGeneration.MethodInvokerAttribute("PlayerProgression.Common.IGrainStateProxy<T>", 1460086779)]
+    internal class GrainStateProxyMethodInvoker<T> : global::Orleans.CodeGeneration.IGrainMethodInvoker
+    
+    {
+        
+        int global::Orleans.CodeGeneration.IGrainMethodInvoker.InterfaceId
+        {
+            get
+            {
+                return 1460086779;
+            }
+        }
+        
+        global::System.Threading.Tasks.Task<object> global::Orleans.CodeGeneration.IGrainMethodInvoker.Invoke(global::Orleans.Runtime.IAddressable grain, int interfaceId, int methodId, object[] arguments)
+        {
+
+            try
+            {                    if (grain == null) throw new System.ArgumentNullException("grain");
+                switch (interfaceId)
+                {
+                    case 1460086779:  // IGrainStateProxy`1
+                        switch (methodId)
+                        {
+                            case -1641608289: 
+                                return ((IGrainStateProxy<T>)grain).AddGrainState((Guid)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
+                            case -469940391: 
+                                return ((IGrainStateProxy<T>)grain).GetGrainState((Guid)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
+                            case -620800765: 
+                                return ((IGrainStateProxy<T>)grain).RemoveGrainState((Guid)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
+                            case 1860823552: 
+                                return ((IGrainStateProxy<T>)grain).UpdateGrainState((Guid)arguments[0], (T)arguments[1]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
+                            default: 
+                            throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
+                        }
+                    default:
+                        throw new System.InvalidCastException("interfaceId="+interfaceId);
+                }
+            }
+            catch(Exception ex)
+            {
+                var t = new System.Threading.Tasks.TaskCompletionSource<object>();
+                t.SetException(ex);
+                return t.Task;
+            }
+        }
+        
+        public static string GetMethodName(int interfaceId, int methodId)
+        {
+
+            switch (interfaceId)
+            {
+                
+                case 1460086779:  // IGrainStateProxy`1
+                    switch (methodId)
+                    {
+                        case -1641608289:
+                            return "AddGrainState";
+                    case -469940391:
+                            return "GetGrainState";
                     case -620800765:
                             return "RemoveGrainState";
                     case 1860823552:

@@ -52,6 +52,14 @@ namespace PlayerProgression
     using System.Runtime.Serialization;
     
 }
+namespace PlayerProgression.Stateless
+{
+    using Orleans;
+    using System;
+    using System.Runtime.InteropServices;
+    using System.Runtime.Serialization;
+    
+}
 #pragma warning restore 162
 #pragma warning restore 219
 #pragma warning restore 414
