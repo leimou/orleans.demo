@@ -107,7 +107,7 @@ namespace PlayerProgression.Common
 
                 for (int j = 0; j < replicas; j++) 
                 {
-                    circle.Add(SlotHash(key, i), i);
+                    circle[SlotHash(key, i)] = i;
                 }
             }
             sortedKeys = circle.Keys.ToArray();
@@ -179,14 +179,10 @@ namespace PlayerProgression.Common
                 return 0;
             }
 
-            while (start < end)
+            while (end - start > 1)
             {
                 mid = (start + end) / 2;
-                if (mid == hash)
-                {
-                    return mid;
-                }
-                else if (mid < hash)
+                if (sortedKeys[mid] >= hash)
                 {
                     end = mid;
                 }
@@ -269,16 +265,8 @@ namespace PlayerProgression.Common
 
         public Task UpdateGrainState(Guid primaryKey, T state)
         {
-            if (states.ContainsKey(primaryKey))
-            {
-                states[primaryKey] = state;
-                return TaskDone.Done;
-            }
-            else
-            {
-                string msg = string.Format("State of grain {0} not managed by slot {1}", primaryKey, this.GetPrimaryKey());
-                throw new Exception(msg);
-            }
+            states[primaryKey] = state;
+            return TaskDone.Done;
         }
 
         public Task<Guid> GetGrain(GrainSelector<T> selector)

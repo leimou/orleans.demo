@@ -478,13 +478,13 @@ namespace PlayerProgression.Common
         
 
                         [System.Obsolete("This method has been deprecated. Please use GrainFactory.GetGrain<IGrainStateProxy<T>> instead.")]
-                        public static IGrainStateProxy<T> GetGrain(System.Guid primaryKey)
+                        public static IGrainStateProxy<T> GetGrain(long primaryKey)
                         {
                             return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(IGrainStateProxy<T>), primaryKey));
                         }
 
                         [System.Obsolete("This method has been deprecated. Please use GrainFactory.GetGrain<IGrainStateProxy<T>> instead.")]
-                        public static IGrainStateProxy<T> GetGrain(System.Guid primaryKey, string grainClassNamePrefix)
+                        public static IGrainStateProxy<T> GetGrain(long primaryKey, string grainClassNamePrefix)
                         {
                             return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(IGrainStateProxy<T>), primaryKey, grainClassNamePrefix));
                         }
@@ -1468,20 +1468,6 @@ global::Orleans.CodeGeneration.GrainFactoryBase.CheckGrainObserverParamInternal(
 
                 return base.InvokeMethodAsync<object>(1804983602, null );
             }
-            
-            System.Threading.Tasks.Task PlayerProgression.Game.IGameGrain.SubscribeStatus(PlayerProgression.Game.IGameObserver @subscriber)
-            {
-global::Orleans.CodeGeneration.GrainFactoryBase.CheckGrainObserverParamInternal(@subscriber);
-
-                return base.InvokeMethodAsync<object>(2079773961, new object[] {@subscriber is global::Orleans.Grain ? @subscriber.AsReference<PlayerProgression.Game.IGameObserver>() : @subscriber} );
-            }
-            
-            System.Threading.Tasks.Task PlayerProgression.Game.IGameGrain.UnsubscribeStatus(PlayerProgression.Game.IGameObserver @subscriber)
-            {
-global::Orleans.CodeGeneration.GrainFactoryBase.CheckGrainObserverParamInternal(@subscriber);
-
-                return base.InvokeMethodAsync<object>(-842179103, new object[] {@subscriber is global::Orleans.Grain ? @subscriber.AsReference<PlayerProgression.Game.IGameObserver>() : @subscriber} );
-            }
         }
     }
     
@@ -1515,10 +1501,6 @@ global::Orleans.CodeGeneration.GrainFactoryBase.CheckGrainObserverParamInternal(
                                 return ((IGameGrain)grain).GameStarts((System.Collections.Generic.List<Int64>)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
                             case 1804983602: 
                                 return ((IGameGrain)grain).GameEnds().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
-                            case 2079773961: 
-                                return ((IGameGrain)grain).SubscribeStatus((IGameObserver)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
-                            case -842179103: 
-                                return ((IGameGrain)grain).UnsubscribeStatus((IGameObserver)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
                             default: 
                             throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
                         }
@@ -1549,176 +1531,6 @@ global::Orleans.CodeGeneration.GrainFactoryBase.CheckGrainObserverParamInternal(
                             return "GameStarts";
                     case 1804983602:
                             return "GameEnds";
-                    case 2079773961:
-                            return "SubscribeStatus";
-                    case -842179103:
-                            return "UnsubscribeStatus";
-                    
-                        default: 
-                            throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
-                    }
-
-                default:
-                    throw new System.InvalidCastException("interfaceId="+interfaceId);
-            }
-        }
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
-    public class GameObserverFactory
-    {
-        
-
-            public static IGameObserver Cast(global::Orleans.Runtime.IAddressable grainRef)
-            {
-                
-                return GameObserverReference.Cast(grainRef);
-            }
-
-        private static global::Orleans.CodeGeneration.IGrainMethodInvoker methodInvoker;
-
-        public async static System.Threading.Tasks.Task<IGameObserver> CreateObjectReference(IGameObserver obj)
-        {
-            if (methodInvoker == null) methodInvoker = new GameObserverMethodInvoker();
-            return GameObserverFactory.Cast(await global::Orleans.Runtime.GrainReference.CreateObjectReference(obj, methodInvoker));
-        }
-
-        public static System.Threading.Tasks.Task DeleteObjectReference(IGameObserver reference)
-        {
-            return global::Orleans.Runtime.GrainReference.DeleteObjectReference(reference);
-        }
-        
-        [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
-        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
-        [System.SerializableAttribute()]
-        [global::Orleans.CodeGeneration.GrainReferenceAttribute("PlayerProgression.Game.IGameObserver")]
-        internal class GameObserverReference : global::Orleans.Runtime.GrainReference, global::Orleans.Runtime.IAddressable, PlayerProgression.Game.IGameObserver
-        {
-            
-
-            public static IGameObserver Cast(global::Orleans.Runtime.IAddressable grainRef)
-            {
-                
-                return (IGameObserver) global::Orleans.Runtime.GrainReference.CastInternal(typeof(IGameObserver), (global::Orleans.Runtime.GrainReference gr) => { return new GameObserverReference(gr);}, grainRef, 555341961);
-            }
-            
-            protected internal GameObserverReference(global::Orleans.Runtime.GrainReference reference) : 
-                    base(reference)
-            {
-            }
-            
-            protected internal GameObserverReference(SerializationInfo info, StreamingContext context) : 
-                    base(info, context)
-            {
-            }
-            
-            protected override int InterfaceId
-            {
-                get
-                {
-                    return 555341961;
-                }
-            }
-            
-            public override string InterfaceName
-            {
-                get
-                {
-                    return "PlayerProgression.Game.IGameObserver";
-                }
-            }
-            
-            [global::Orleans.CodeGeneration.CopierMethodAttribute()]
-            public static object _Copier(object original)
-            {
-                GameObserverReference input = ((GameObserverReference)(original));
-                return ((GameObserverReference)(global::Orleans.Runtime.GrainReference.CopyGrainReference(input)));
-            }
-            
-            [global::Orleans.CodeGeneration.SerializerMethodAttribute()]
-            public static void _Serializer(object original, global::Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
-            {
-                GameObserverReference input = ((GameObserverReference)(original));
-                global::Orleans.Runtime.GrainReference.SerializeGrainReference(input, stream, expected);
-            }
-            
-            [global::Orleans.CodeGeneration.DeserializerMethodAttribute()]
-            public static object _Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
-            {
-                return GameObserverReference.Cast(((global::Orleans.Runtime.GrainReference)(global::Orleans.Runtime.GrainReference.DeserializeGrainReference(expected, stream))));
-            }
-            
-            public override bool IsCompatible(int interfaceId)
-            {
-                return (interfaceId == this.InterfaceId);
-            }
-            
-            protected override string GetMethodName(int interfaceId, int methodId)
-            {
-                return GameObserverMethodInvoker.GetMethodName(interfaceId, methodId);
-            }
-            
-            void PlayerProgression.Game.IGameObserver.UpdateGameStatus(System.Guid @id, bool @available)
-            {
-
-                    base.InvokeOneWayMethod(132903498, new object[] {@id, @available} );
-            }
-        }
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
-    [global::Orleans.CodeGeneration.MethodInvokerAttribute("PlayerProgression.Game.IGameObserver", 555341961)]
-    internal class GameObserverMethodInvoker : global::Orleans.CodeGeneration.IGrainMethodInvoker
-    {
-        
-        int global::Orleans.CodeGeneration.IGrainMethodInvoker.InterfaceId
-        {
-            get
-            {
-                return 555341961;
-            }
-        }
-        
-        global::System.Threading.Tasks.Task<object> global::Orleans.CodeGeneration.IGrainMethodInvoker.Invoke(global::Orleans.Runtime.IAddressable grain, int interfaceId, int methodId, object[] arguments)
-        {
-
-            try
-            {                    if (grain == null) throw new System.ArgumentNullException("grain");
-                switch (interfaceId)
-                {
-                    case 555341961:  // IGameObserver
-                        switch (methodId)
-                        {
-                            case 132903498: 
-                                ((IGameObserver)grain).UpdateGameStatus((Guid)arguments[0], (Boolean)arguments[1]); return System.Threading.Tasks.Task.FromResult((object)true);
-                            default: 
-                            throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
-                        }
-                    default:
-                        throw new System.InvalidCastException("interfaceId="+interfaceId);
-                }
-            }
-            catch(Exception ex)
-            {
-                var t = new System.Threading.Tasks.TaskCompletionSource<object>();
-                t.SetException(ex);
-                return t.Task;
-            }
-        }
-        
-        public static string GetMethodName(int interfaceId, int methodId)
-        {
-
-            switch (interfaceId)
-            {
-                
-                case 555341961:  // IGameObserver
-                    switch (methodId)
-                    {
-                        case 132903498:
-                            return "UpdateGameStatus";
                     
                         default: 
                             throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);

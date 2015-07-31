@@ -58,6 +58,14 @@
     <Reference Include="Orleans">
       <HintPath>..\Orleans\Binaries\Release\Orleans.dll</HintPath>
     </Reference>
+    <Reference Include="OrleansHost, Version=1.0.0.0, Culture=neutral, PublicKeyToken=070f47935e3ed133, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Orleans\Binaries\Release\OrleansHost.exe</HintPath>
+    </Reference>
+    <Reference Include="OrleansProviders, Version=1.0.0.0, Culture=neutral, PublicKeyToken=070f47935e3ed133, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Orleans\Binaries\Release\OrleansProviders.dll</HintPath>
+    </Reference>
     <Reference Include="OrleansRuntime, Version=1.0.0.0, Culture=neutral, PublicKeyToken=070f47935e3ed133, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Orleans\Binaries\Release\OrleansRuntime.dll</HintPath>

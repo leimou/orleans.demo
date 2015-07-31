@@ -1,6 +1,7 @@
 ﻿using Orleans;
 using Orleans.Streams;
 using PlayerProgression.Player;
+using PlayerProgression.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,27 +11,25 @@ namespace PlayerProgression.Game
 {
     public class GameGrain : Grain, IGameGrain
     {
-        public HashSet<long> players;
-        private ObserverSubscriptionManager<IGameObserver> subscribers;
-
         // The progression should be in game events, such as "Died", "Headshot" etc.
         // For illustration purpose, only simple Progression struct is used.
         private Dictionary<long, IAsyncStream<Progression>> playersEvents;
+        private IGrainStateProxy<bool> gameState;
+        public HashSet<long> players;
 
         public override Task OnActivateAsync()
         {
-            players = new HashSet<long>();
-            subscribers = new ObserverSubscriptionManager<IGameObserver>();
             playersEvents = new Dictionary<long, IAsyncStream<Progression>>();
-            return base.OnActivateAsync();
+            gameState = GrainFactory.GetGrain<IGrainStateProxy<bool>>(0);
+            players = new HashSet<long>();
+            return TaskDone.Done;
         }
 
         public override Task OnDeactivateAsync()
         {
             players.Clear();
             playersEvents.Clear();
-            subscribers.Clear();
-            return base.OnDeactivateAsync();
+            return TaskDone.Done;
         }
 
         private void ProducePlayerGameEvents(long playerId)
@@ -83,6 +82,7 @@ namespace PlayerProgression.Game
             }
 
             List<Task> promises = new List<Task>();
+            List<long> removedPlayers = new List<long>();
             foreach (long playerId in players)
             {
                 if (!gameStatus.ContainsKey(playerId))
@@ -90,7 +90,7 @@ namespace PlayerProgression.Game
                     try 
                     {
                         promises.Add(base.GrainFactory.GetGrain<IPlayerGrain>(playerId).LeaveGame(this));
-                        RemovePlayer(playerId);
+                        removedPlayers.Add(playerId);
                     }
                     catch (Exception) {}
                 }
@@ -100,14 +100,21 @@ namespace PlayerProgression.Game
                     promises.Add(playerStream.OnNextAsync(gameStatus[playerId]));
                 }
             }
+            
+            if (removedPlayers.Count > 0)
+            {
+                foreach (long playerId in removedPlayers)
+                {
+                    RemovePlayer(playerId);
+                }
+            }
+
             await Task.WhenAll(promises);
         }
 
         public async Task GameStarts(List<long> playerList)
         {
-            // Notify process manager the status of this session has changed to NOT available.
-            // TODO: Modify the status of game session to StatelessWorker + Shared read replicas (using consistent hashing).
-            subscribers.Notify((s) => s.UpdateGameStatus(this.GetPrimaryKey(), false));
+            await gameState.UpdateGrainState(this.GetPrimaryKey(), false);
 
             foreach (long playerId in playerList)
             {
@@ -131,19 +138,7 @@ namespace PlayerProgression.Game
                 RemovePlayer(player);
             }
             // Notify process manager the status of this session has changed to available again.
-            subscribers.Notify((s) => s.UpdateGameStatus(this.GetPrimaryKey(), true));
-        }
-
-        public Task SubscribeStatus(IGameObserver subscriber)
-        {
-            subscribers.Subscribe(subscriber);
-            return TaskDone.Done;
-        }
-
-        public Task UnsubscribeStatus(IGameObserver subscriber)
-        {
-            subscribers.Unsubscribe(subscriber);
-            return TaskDone.Done;
+            await gameState.UpdateGrainState(this.GetPrimaryKey(), true);
         }
     }
 }

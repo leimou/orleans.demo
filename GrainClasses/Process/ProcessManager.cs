@@ -7,30 +7,40 @@ using Orleans;
 using Orleans.Concurrency;
 using Orleans.Streams;
 using PlayerProgression.Game;
+using PlayerProgression.Common;
 
 namespace PlayerProgression.ProcessManagement
 {
+    [Serializable]
+    static class AvailableGrainSelector
+    {
+        public static bool Select(bool state)
+        {
+            return state == true;
+        }
+    }
+
     // TODO: Use consistent hashing for process instance look up.
     [Reentrant]
-    class ProcessManager : Grain, IProcessManager, IGameObserver
+    class ProcessManager : Grain, IProcessManager //, IGameObserver
     {
         private ObserverSubscriptionManager<IProcessMgrObserver> subscribers;
         private Queue<TaskCompletionSource<Guid>> source;
-        private Dictionary<Guid, bool> processStatus;
+        private IGrainStateProxy<bool> processStatus;
 
         public override Task OnActivateAsync()
         {
+            processStatus = GrainFactory.GetGrain<IGrainStateProxy<bool>>(0);
             subscribers = new ObserverSubscriptionManager<IProcessMgrObserver>();
-            processStatus = new Dictionary<Guid, bool>();
             source = new Queue<TaskCompletionSource<Guid>>();
 
-            return base.OnActivateAsync();
+            return TaskDone.Done;
         }
 
         public override Task OnDeactivateAsync()
         {
             subscribers.Clear();
-            return base.OnDeactivateAsync();
+            return TaskDone.Done;
         }
 
         // Called by matcher: Needs a new dedicated server process.
@@ -45,29 +55,23 @@ namespace PlayerProgression.ProcessManagement
         }
 
         // Reported by dedicated server manager: process created, with processId as id.
-        public Task ProcessCreated(Guid processId)
+        public async Task ProcessCreated(Guid processId)
         {
             source.Peek().SetResult(processId);
-
-            IGameGrain session = GrainFactory.GetGrain<IGameGrain>(processId);
-            session.SubscribeStatus(this);
-
+            
             try
             {
-                processStatus.Add(processId, false);
+                await processStatus.UpdateGrainState(processId, false);
             }
             catch (Exception)
             {
                 throw new Exception("Unexpected state: processId should NOT exist in dictionary.");
             }
-            return TaskDone.Done;
         }
 
-        public Task ProcessExited(Guid processId)
+        public async Task ProcessExited(Guid processId)
         {
-            IGameGrain session = GrainFactory.GetGrain<IGameGrain>(processId);
-            session.UnsubscribeStatus(this);
-            return TaskDone.Done;
+            await processStatus.RemoveGrainState(processId);
         }
 
         public Task SubscribeNotification(IProcessMgrObserver subscriber)
@@ -82,6 +86,7 @@ namespace PlayerProgression.ProcessManagement
             return TaskDone.Done;
         }
 
+        /*
         public void UpdateGameStatus(Guid id, bool isAvailable)
         {
             if (processStatus.ContainsKey(id))
@@ -94,22 +99,18 @@ namespace PlayerProgression.ProcessManagement
                 throw new Exception("Unexpected state: processId SHOULD exist in dictionary.");
             }
         }
+         */
         
         public async Task<Guid> GetProcess()
         {
-            if (processStatus.Count == 0)
+            Guid processId = await processStatus.GetGrain(AvailableGrainSelector.Select);
+            if (processId == Guid.Empty)
             {
                 return await CreateProcess();
             }
             else
             {
-                foreach (var pair in processStatus)
-                {
-                    if (pair.Value == true) {
-                        return await Task.FromResult(pair.Key);
-                    }
-                }
-                return await CreateProcess();
+                return processId;
             }
         }
 

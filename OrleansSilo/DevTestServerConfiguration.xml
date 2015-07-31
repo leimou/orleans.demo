@@ -14,13 +14,13 @@
     </StreamProviders>
     <!-- <SeedNode Address="localhost" Port="11111" /> -->
     <SystemStore
-      DataConnectionString="172.17.15.106"
+      DataConnectionString="172.17.15.71"
       DeploymentId="crysis"
       SystemStoreType="ZooKeeper"/>
   </Globals>
   <Defaults>
     <Networking Port="11111" />
-    <ProxyingGateway Address="172.17.15.107" Port="30000" />
+    <ProxyingGateway Address="172.17.15.37" Port="30000" />
     <Tracing DefaultTraceLevel="Info" TraceToConsole="true" TraceToFile="{0}-{1}.log">
       <TraceLevelOverride LogPrefix="Application" TraceLevel="Info" />
     </Tracing>

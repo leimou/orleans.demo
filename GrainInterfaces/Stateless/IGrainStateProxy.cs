@@ -8,7 +8,7 @@ namespace PlayerProgression.Common
     // state.
     public delegate bool GrainSelector<T>(T state);
 
-    public interface IGrainStateProxy<T> : IGrainWithGuidKey
+    public interface IGrainStateProxy<T> : IGrainWithIntegerKey
     {
         Task AddGrainState(Guid primaryKey);
 

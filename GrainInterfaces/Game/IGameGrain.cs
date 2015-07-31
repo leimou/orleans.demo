@@ -16,14 +16,9 @@ namespace PlayerProgression.Game
     {
         // Called by heartbeat, for updating statistics 
         Task UpdateGameStatistics(GameStatus status);
-        Task GameStarts(List<long> players);
-        Task GameEnds();
-        Task SubscribeStatus(IGameObserver subscriber);
-        Task UnsubscribeStatus(IGameObserver subscriber);
-    }
 
-    public interface IGameObserver : IGrainObserver
-    {
-        void UpdateGameStatus(Guid id, bool available);
+        Task GameStarts(List<long> players);
+
+        Task GameEnds();
     }
 }
